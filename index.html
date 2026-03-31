@@ -18,7 +18,6 @@
             margin: 0;
             overflow: hidden; 
             text-align: center;
-            /* 1. Custom Heart Cursor for the whole page */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>💖</text></svg>"), auto;
         }
 
@@ -30,8 +29,8 @@
             z-index: 10;
             max-width: 85%;
             width: 420px;
-            max-height: 90vh; /* Prevents card from getting too tall */
-            overflow-y: auto; /* Adds a scrollbar inside the card if needed */
+            max-height: 90vh; 
+            overflow-y: auto; 
         }
 
         h1 { 
@@ -59,7 +58,6 @@
             margin-top: 20px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
-            /* Custom Cat Paw Cursor for buttons */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🐾</text></svg>"), pointer;
         }
 
@@ -73,7 +71,6 @@
             animation: none; 
         }
 
-        /* Styling for the new Generator Button */
         .reason-btn {
             background-color: white;
             color: #ff4d94;
@@ -88,7 +85,6 @@
             transform: scale(1.05);
         }
 
-        /* The animated text for the reasons */
         #reasonDisplay {
             color: #ff4d94;
             font-weight: bold;
@@ -122,6 +118,27 @@
             font-size: 1.4rem;
         }
 
+        /* Styling for the new visible music player area */
+        .music-player-container {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px dashed #ffe6f2;
+        }
+
+        .call-note {
+            font-size: 0.95rem;
+            color: #ff80b3;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        /* Makes the default audio player look a bit softer */
+        audio {
+            height: 35px;
+            border-radius: 20px;
+            outline: none;
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); }
             50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 148, 0); }
@@ -142,10 +159,6 @@
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="song1.mp3" type="audio/mpeg">
-    </audio>
-
     <div class="card-container">
         <h1>Hi Ayuu 💖</h1>
         <p id="introText">I coded a little something just for you...</p>
@@ -163,13 +176,28 @@
                 <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
                 <p id="reasonDisplay"></p>
             </div>
+
+            <div class="fade-line music-player-container" id="line6">
+                <p class="call-note">🎵 (If we're on a call, your phone might mute the music! You can play it here 💕)</p>
+                <audio id="bgMusic" controls loop>
+                    <source src="song1.mp3" type="audio/mpeg">
+                </audio>
+            </div>
         </div>
     </div>
 
     <script>
         function revealMessage() {
-            // Play the background music!
-            document.getElementById('bgMusic').play();
+            // Attempt to play the background music
+            let music = document.getElementById('bgMusic');
+            
+            // The catch() prevents the code from breaking if the phone blocks the audio during a call
+            let playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Audio auto-play was prevented by the phone, usually because of an active call.");
+                });
+            }
 
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('introText').style.display = 'none';
@@ -179,14 +207,14 @@
             setTimeout(() => { document.getElementById('line2').style.opacity = '1'; document.getElementById('line2').style.transform = 'translateY(0)'; }, 1500);
             setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
             setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
-            
-            // Fades in the generator button last
             setTimeout(() => { document.getElementById('line5').style.opacity = '1'; document.getElementById('line5').style.transform = 'translateY(0)'; }, 7000);
+            
+            // Fades in the music player last
+            setTimeout(() => { document.getElementById('line6').style.opacity = '1'; document.getElementById('line6').style.transform = 'translateY(0)'; }, 8000);
 
             createEmojiShower();
         }
 
-        // --- JavaScript for the Reason Generator ---
         const reasons = [
             "You have the most beautiful smile. ✨",
             "I love our late-night talks. 🌙",
@@ -201,13 +229,8 @@
 
         function generateReason() {
             const display = document.getElementById('reasonDisplay');
-            // Pick a random number between 0 and the amount of reasons we have
             const randomIndex = Math.floor(Math.random() * reasons.length);
-            
-            // Update the text on the screen
             display.innerText = reasons[randomIndex];
-            
-            // Add a little pop animation when the text changes
             display.style.transform = 'scale(1.1)';
             setTimeout(() => {
                 display.style.transform = 'scale(1)';
