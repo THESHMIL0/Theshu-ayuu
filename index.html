@@ -8,11 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Pink Custom Scrollbar */
+        /* Base Styles & Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #ffe6f2; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #ff4d94; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ff1a75; }
 
         body {
             background: linear-gradient(135deg, #ffe6f2 0%, #ffb3d9 100%);
@@ -28,11 +27,48 @@
             transition: background 1s ease; 
         }
 
-        /* Starlight Mode Styling */
-        body.starlight-mode {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        }
+        body.starlight-mode { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
 
+        /* FEATURE 6: Custom Loading Screen */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffe6f2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+        .loader-heart { font-size: 5rem; animation: gentlePulse 1s infinite alternate; }
+        .loader-text { color: #ff4d94; font-weight: bold; margin-top: 20px; font-size: 1.2rem; }
+
+        /* FEATURE 3: 3D Envelope */
+        #envelope-container {
+            position: fixed;
+            z-index: 50;
+            cursor: pointer;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .envelope {
+            width: 300px; height: 200px;
+            background: #ff4d94;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: bold; font-size: 1.5rem;
+            animation: floatEnv 3s infinite ease-in-out;
+            border: 4px solid #fff;
+        }
+        .envelope::after {
+            content: "Tap to Open 💌";
+            position: absolute;
+        }
+        .envelope:hover { transform: scale(1.05); }
+
+        /* Main Card Container */
         .card-container {
             background: white;
             padding: 40px;
@@ -44,293 +80,253 @@
             max-height: 90vh; 
             overflow-y: auto; 
             position: relative;
+            display: none; /* Hidden until envelope is opened */
+            opacity: 0;
+            transform: translateY(50px);
             transition: all 1s ease;
         }
-
-        body.starlight-mode .card-container {
-            background: #1a1a2e;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            color: #e6e6e6;
-        }
+        body.starlight-mode .card-container { background: #1a1a2e; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
         body.starlight-mode p { color: #ccc; }
 
-        /* Pulsing Title */
+        /* FEATURE 4: Neon Glow Name */
         h1 { 
-            color: #ff4d94; 
-            font-size: 2.8rem;
+            color: #fff; 
+            font-size: 3rem;
             margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(255, 77, 148, 0.1);
+            text-shadow: 0 0 10px #ffb3d9, 0 0 20px #ff4d94, 0 0 30px #ff1a75;
             animation: gentlePulse 2s infinite alternate;
         }
 
-        p { 
-            color: #666; 
-            font-size: 1.25rem; 
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
+        p { color: #666; font-size: 1.25rem; line-height: 1.6; margin-bottom: 10px; min-height: 30px; }
 
         button {
-            background-color: #ff4d94;
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            font-size: 1.3rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
+            background-color: #ff4d94; color: white; border: none; padding: 10px 25px;
+            font-size: 1.1rem; border-radius: 50px; transition: all 0.3s ease; margin-top: 10px;
+            font-family: 'Quicksand', sans-serif; font-weight: 700;
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🐾</text></svg>"), pointer;
         }
+        button:hover { background-color: #ff1a75; transform: scale(1.05); }
+        .theme-btn { position: absolute; top: 15px; right: 15px; background: none; font-size: 1.5rem; padding: 5px; }
 
-        #revealBtn { animation: pulseBtn 2s infinite; }
-        button:hover { background-color: #ff1a75; transform: scale(1.05); animation: none; }
-
-        .reason-btn, .kiss-btn {
-            background-color: white;
-            color: #ff4d94;
-            border: 2px solid #ff4d94;
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        /* Theme Toggle Button */
-        .theme-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            padding: 5px;
-            margin: 0;
-            box-shadow: none;
-        }
-        .theme-btn:hover { background: none; transform: scale(1.2); }
-
-        #reasonDisplay {
-            color: #ff4d94;
-            font-weight: bold;
-            font-style: italic;
-            margin-top: 15px;
-            min-height: 30px; 
-            transition: transform 0.2s ease;
-        }
-
-        #secretContent { display: none; margin-top: 20px; }
-
-        /* Polaroid Glow Effect */
+        /* FEATURE 2: Photo Slideshow */
+        .slideshow-container { position: relative; width: 85%; margin: 0 auto 20px auto; }
         .love-photo {
-            width: 85%;
-            border: 10px solid white;
-            border-bottom: 30px solid white; 
-            border-radius: 4px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transform: rotate(-3deg); 
-            margin: 0 auto 20px auto;
-            display: block;
-            transition: all 0.4s ease;
+            width: 100%; border: 8px solid white; border-bottom: 25px solid white; 
+            border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            display: block; transition: all 0.4s ease;
         }
-        .love-photo:hover {
-            transform: rotate(0deg) scale(1.05);
-            box-shadow: 0 0 25px #ff4d94;
+        .prev-btn, .next-btn {
+            position: absolute; top: 40%; background: rgba(255, 77, 148, 0.8);
+            color: white; border: none; padding: 10px; cursor: pointer; border-radius: 50%;
+            font-size: 1rem; transform: translateY(-50%); width: 40px; height: 40px;
         }
+        .prev-btn { left: -15px; }
+        .next-btn { right: -15px; }
 
-        .fade-line { opacity: 0; transform: translateY(10px); transition: opacity 1s ease-out, transform 1s ease-out; }
-        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.4rem; }
-
-        .music-player-container {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 2px dashed #ffb3d9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* FEATURE 7: Timeline of Us */
+        .timeline {
+            border-left: 4px solid #ff4d94;
+            margin: 20px 0 20px 20px;
+            padding-left: 15px;
+            text-align: left;
         }
-
-        .call-note { font-size: 0.95rem; color: #ff80b3; font-style: italic; margin-bottom: 8px; }
-        audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; }
-
-        /* Bouncing Music Notes */
-        .music-notes { font-size: 1.5rem; display: flex; gap: 10px; }
-        .note { animation: bounce 1s infinite alternate; }
-        .note:nth-child(2) { animation-delay: 0.3s; }
-        .note:nth-child(3) { animation-delay: 0.6s; }
-
-        /* Timer Styling */
-        #timerBox {
-            background: #ffe6f2;
-            color: #ff4d94;
-            padding: 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 1rem;
+        .time-item {
             margin-bottom: 15px;
-            border: 1px dashed #ff4d94;
+            position: relative;
+            font-size: 1.1rem;
+            color: #555;
         }
+        body.starlight-mode .time-item { color: #ccc; }
+        .time-item::before {
+            content: "💖";
+            position: absolute; left: -28px; top: -2px; font-size: 1rem;
+            background: white; border-radius: 50%; padding: 2px;
+        }
+        body.starlight-mode .time-item::before { background: #1a1a2e; }
+
+        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.3rem; }
+        .music-player-container { margin-top: 25px; padding-top: 15px; border-top: 2px dashed #ffb3d9; display: flex; flex-direction: column; align-items: center; }
+        audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; }
+        
+        #timerBox { background: #ffe6f2; color: #ff4d94; padding: 10px; border-radius: 15px; font-weight: bold; margin-bottom: 15px; border: 1px dashed #ff4d94; }
         body.starlight-mode #timerBox { background: #2c5364; color: #ffb3d9; border-color: #ffb3d9;}
 
-        /* Promise Checkbox */
-        .promise-container { margin-top: 15px; font-size: 1.1rem; color: #555; }
-        body.starlight-mode .promise-container { color: #ccc; }
-        #promiseMsg { display: none; color: #ff4d94; font-weight: bold; margin-top: 5px; animation: gentlePulse 1s infinite; }
-
-        /* Sweet Footer */
-        .footer {
-            margin-top: 25px;
-            font-size: 0.8rem;
-            color: #aaa;
-            font-style: italic;
+        /* FEATURE 5: Floating Bubbles */
+        .bubble {
+            position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%; border: 1px solid rgba(255, 77, 148, 0.3);
+            animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: 1;
         }
 
         /* Animations */
         @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.05); } }
-        @keyframes pulseBtn {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 148, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0); }
+        @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes floatUpBubbles {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
         }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-        @keyframes floatUp { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -100px) scale(1.5); opacity: 0; } }
-        
-        /* Virtual Kiss Animation */
-        @keyframes flyingKiss {
-            0% { transform: scale(0.5) translateY(0); opacity: 1; }
-            100% { transform: scale(3) translateY(-200px); opacity: 0; }
-        }
-        .falling-emoji { position: absolute; z-index: 1; top: -10vh; animation: fall linear forwards; }
     </style>
 </head>
 <body>
 
-    <div class="card-container">
+    <div id="loader">
+        <div class="loader-heart">💖</div>
+        <div class="loader-text">Loading love for Ayuu...</div>
+    </div>
+
+    <div id="envelope-container" onclick="openEnvelope()">
+        <div class="envelope"></div>
+    </div>
+
+    <div class="card-container" id="mainCard">
         <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
 
-        <h1>Hi Ayuu 💖</h1>
-        <p id="introText">I coded a little something just for you...</p>
+        <h1>Hi Ayuu</h1>
         
-        <button id="revealBtn" onclick="revealMessage()">Click Me 😸</button>
+        <div class="slideshow-container">
+            <button class="prev-btn" onclick="changeSlide(-1)">❮</button>
+            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="slideImg">
+            <button class="next-btn" onclick="changeSlide(1)">❯</button>
+        </div>
 
-        <div id="secretContent">
-            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo fade-line" id="line1">
-            
-            <div id="timerBox" class="fade-line line-extra">
-                Time Together:<br>
-                <span id="timeDisplay">Calculating...</span>
-            </div>
+        <div id="timerBox">
+            Time Together:<br><span id="timeDisplay">Calculating...</span>
+        </div>
 
-            <p class="fade-line" id="line2">I know things feel hard right now, and sometimes you feel lonely.</p>
-            <p class="fade-line highlight" id="line3">But I want you to know: I am right here, and I am not going anywhere.</p>
-            <p class="fade-line" id="line4">I love you so much. You are never alone as long as I'm around! 🗽💖</p>
-            
-            <div class="fade-line" id="line5">
-                <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
-                <p id="reasonDisplay"></p>
-                <button class="kiss-btn" onclick="sendKiss()">Send a Kiss 💋</button>
-            </div>
+        <p id="typeLine1"></p>
+        <p id="typeLine2" class="highlight"></p>
+        <p id="typeLine3"></p>
 
-            <div class="fade-line promise-container" id="line-promise">
-                <input type="checkbox" id="loveCheckbox" onchange="checkPromise()">
-                <label for="loveCheckbox">I accept your love 🥺</label>
-                <p id="promiseMsg">Yay! I promise to always make you smile! 🥰</p>
-            </div>
+        <div class="timeline">
+            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
+            <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
+            <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
+        </div>
+        
+        <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
+        <p id="reasonDisplay"></p>
 
-            <div class="fade-line music-player-container" id="line6">
-                <p class="call-note">🎵 (If we're on a call, you can play our song here 💕)</p>
-                <audio id="bgMusic" controls loop autoplay>
-                    <source src="song1.mp3" type="audio/mpeg">
-                </audio>
-                <div class="music-notes">
-                    <span class="note">🎵</span><span class="note">🎶</span><span class="note">🎵</span>
-                </div>
-            </div>
-
-            <div class="fade-line footer" id="line7">
-                Made with endless love by Theshu for Ayuu ✨
-            </div>
+        <div class="music-player-container">
+            <p style="font-size: 0.9rem; margin: 0 0 5px 0;">🎵 Our Song</p>
+            <audio id="bgMusic" controls loop>
+                <source src="song1.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </div>
 
     <script>
-        // Secret Developer Message (Press F12 to see it in Console!)
-        console.log("%cHello Ayuu! Theshu coded this entirely for you because he loves you so much! 💖🗽", "color: #ff4d94; font-size: 20px; font-weight: bold;");
+        // --- 1. Loader & Envelope Logic ---
+        window.onload = function() {
+            // Hide the loader after 2 seconds
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 2000);
 
-        function revealMessage() {
-            let music = document.getElementById('bgMusic');
-            let playPromise = music.play();
-            if (playPromise !== undefined) { playPromise.catch(error => { console.log("Audio auto-play prevented."); }); }
-
-            document.getElementById('revealBtn').style.display = 'none';
-            document.getElementById('introText').style.display = 'none';
-            document.getElementById('secretContent').style.display = 'block';
-            
-            // Fading in all the elements
-            setTimeout(() => { document.getElementById('line1').style.opacity = '1'; document.getElementById('line1').style.transform = 'translateY(0) rotate(-3deg)'; }, 100);
-            setTimeout(() => { document.querySelector('.line-extra').style.opacity = '1'; document.querySelector('.line-extra').style.transform = 'translateY(0)'; }, 800);
-            setTimeout(() => { document.getElementById('line2').style.opacity = '1'; document.getElementById('line2').style.transform = 'translateY(0)'; }, 1500);
-            setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
-            setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
-            setTimeout(() => { document.getElementById('line5').style.opacity = '1'; document.getElementById('line5').style.transform = 'translateY(0)'; }, 7000);
-            setTimeout(() => { document.getElementById('line-promise').style.opacity = '1'; document.getElementById('line-promise').style.transform = 'translateY(0)'; }, 7500);
-            setTimeout(() => { document.getElementById('line6').style.opacity = '1'; document.getElementById('line6').style.transform = 'translateY(0)'; }, 8000);
-            setTimeout(() => { document.getElementById('line7').style.opacity = '1'; document.getElementById('line7').style.transform = 'translateY(0)'; }, 8500);
-
-            createEmojiShower();
             startTimer();
+            createBubbles();
+        };
+
+        function openEnvelope() {
+            // Play music when she taps the envelope!
+            let music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Audio prevented."));
+
+            // Animate envelope away
+            const env = document.getElementById('envelope-container');
+            env.style.transform = 'scale(1.5) translateY(-50px)';
+            env.style.opacity = '0';
+            
+            setTimeout(() => {
+                env.style.display = 'none';
+                // Show the main card
+                const card = document.getElementById('mainCard');
+                card.style.display = 'block';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                    startTypewriter(); // Trigger typing effect!
+                }, 50);
+            }, 800);
         }
 
-        // --- JavaScript for Timer with your exact date ---
-        function startTimer() {
-            // Your Anniversary Date: 2026-01-14
-            const startDate = new Date("2026-01-14T00:00:00").getTime(); 
+        // --- 2. Typewriter Effect Logic ---
+        const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
+        const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
+        const text3 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
 
+        function typeWriter(elementId, text, speed, callback) {
+            let i = 0;
+            document.getElementById(elementId).innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    document.getElementById(elementId).innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    setTimeout(callback, 500); // Wait 0.5s before starting next line
+                }
+            }
+            type();
+        }
+
+        function startTypewriter() {
+            // Chains the typing so they happen one after another
+            typeWriter("typeLine1", text1, 40, () => {
+                typeWriter("typeLine2", text2, 40, () => {
+                    typeWriter("typeLine3", text3, 40, null);
+                });
+            });
+        }
+
+        // --- 3. Slideshow Logic ---
+        const images = ["image_0.jpg", "image_1.jpg", "image_2.jpg"];
+        let currentImgIndex = 0;
+
+        function changeSlide(direction) {
+            currentImgIndex += direction;
+            // Loop back to start or end if she clicks past the limits
+            if (currentImgIndex >= images.length) currentImgIndex = 0;
+            if (currentImgIndex < 0) currentImgIndex = images.length - 1;
+            
+            document.getElementById('slideImg').src = images[currentImgIndex];
+        }
+
+        // --- 4. Timer Logic (January 14, 2026) ---
+        function startTimer() {
+            const startDate = new Date("2026-01-14T00:00:00").getTime(); 
             setInterval(function() {
                 const now = new Date().getTime();
                 const distance = now - startDate;
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 document.getElementById("timeDisplay").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
             }, 1000);
+        }
+
+        // --- 5. Floating Bubbles Generator ---
+        function createBubbles() {
+            for(let i = 0; i < 20; i++) {
+                let bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                // Random size and position
+                bubble.style.width = Math.random() * 30 + 10 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubble.style.animationDuration = Math.random() * 5 + 5 + 's';
+                document.body.appendChild(bubble);
+            }
         }
 
         function toggleTheme() {
             document.body.classList.toggle('starlight-mode');
             const btn = document.querySelector('.theme-btn');
-            if(document.body.classList.contains('starlight-mode')) {
-                btn.innerText = '☀️'; 
-            } else {
-                btn.innerText = '🌙'; 
-            }
-        }
-
-        function sendKiss() {
-            const kiss = document.createElement('div');
-            kiss.innerText = '💋';
-            kiss.style.position = 'fixed';
-            kiss.style.left = '50%';
-            kiss.style.top = '60%';
-            kiss.style.fontSize = '3rem';
-            kiss.style.zIndex = '1000';
-            kiss.style.pointerEvents = 'none';
-            kiss.style.animation = 'flyingKiss 1.5s ease-out forwards';
-            document.body.appendChild(kiss);
-            setTimeout(() => { kiss.remove(); }, 1500);
-        }
-
-        function checkPromise() {
-            const msg = document.getElementById('promiseMsg');
-            if(document.getElementById('loveCheckbox').checked) {
-                msg.style.display = 'block';
-            } else {
-                msg.style.display = 'none';
-            }
+            if(document.body.classList.contains('starlight-mode')) { btn.innerText = '☀️'; } else { btn.innerText = '🌙'; }
         }
 
         const reasons = [
@@ -338,11 +334,7 @@
             "I love our late-night talks. 🌙",
             "You make my world so bright. ☀️",
             "Your laugh is my favorite sound. 🎶",
-            "You have the kindest heart. 💖",
-            "Every moment with you is an adventure. 🗽",
-            "You understand me like no one else. 😸",
-            "You are stronger than you know. 💪",
-            "You are my favorite person in the world! 🥰"
+            "Every moment with you is an adventure. 🗽"
         ];
 
         function generateReason() {
@@ -352,37 +344,6 @@
             display.style.transform = 'scale(1.1)';
             setTimeout(() => { display.style.transform = 'scale(1)'; }, 200);
         }
-
-        function createEmojiShower() {
-            const emojis = ['💖', '😸', '🗽', '✨', '🌸']; 
-            for(let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const el = document.createElement('div');
-                    el.classList.add('falling-emoji');
-                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                    el.style.left = Math.random() * 100 + 'vw';
-                    el.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                    el.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                    document.body.appendChild(el);
-                    setTimeout(() => { el.remove(); }, 6000);
-                }, i * 100); 
-            }
-        }
-
-        document.body.addEventListener('click', function(event) {
-            if(event.target.tagName === 'BUTTON' || event.target.tagName === 'INPUT' || event.target.tagName === 'LABEL') return;
-
-            const clickHeart = document.createElement('div');
-            clickHeart.innerText = '💖';
-            clickHeart.style.position = 'absolute';
-            clickHeart.style.left = event.clientX + 'px';
-            clickHeart.style.top = event.clientY + 'px';
-            clickHeart.style.fontSize = '24px';
-            clickHeart.style.pointerEvents = 'none'; 
-            clickHeart.style.animation = 'floatUp 1.5s ease-out forwards';
-            document.body.appendChild(clickHeart);
-            setTimeout(() => { clickHeart.remove(); }, 1500);
-        });
     </script>
 </body>
 </html>
