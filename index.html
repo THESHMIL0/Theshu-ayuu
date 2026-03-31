@@ -80,7 +80,6 @@
             max-width: 85%;
             box-sizing: border-box; 
             
-            /* Hide initially until envelope is clicked */
             display: none; 
             opacity: 0;
             transform: translateY(50px);
@@ -107,7 +106,7 @@
             animation: gentlePulse 2s infinite alternate;
         }
 
-        p { color: #666; font-size: 1.25rem; line-height: 1.6; margin-bottom: 10px; min-height: 30px; }
+        p { color: #666; font-size: 1.15rem; line-height: 1.6; margin-bottom: 12px; min-height: 25px; }
 
         button {
             background-color: #ff4d94; color: white; border: none; padding: 10px 25px;
@@ -118,16 +117,14 @@
         button:hover { background-color: #ff1a75; transform: scale(1.05); }
         .theme-btn { position: absolute; top: 15px; right: 15px; background: none; font-size: 1.5rem; padding: 5px; }
 
-        /* Single Photo Styling */
+        /* UPGRADED: Single Photo Styling (Borderless & Sleek) */
         .photo-container { 
             position: relative; 
-            width: 85%; 
+            width: 90%; 
             margin: 0 auto 25px auto; 
             overflow: hidden; 
-            border: 8px solid white; 
-            border-bottom: 25px solid white; 
-            border-radius: 4px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-radius: 15px; /* Clean, modern rounded corners */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Deep, soft shadow */
         }
 
         .love-photo {
@@ -140,7 +137,7 @@
         /* Timeline of Us */
         .timeline {
             border-left: 4px solid #ff4d94;
-            margin: 20px 0 20px 20px;
+            margin: 25px 0 25px 20px;
             padding-left: 15px;
             text-align: left;
         }
@@ -152,11 +149,11 @@
         }
         body.starlight-mode .time-item::before { background: #1a1a2e; }
 
-        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.3rem; text-shadow: 0 0 5px rgba(255, 77, 148, 0.2); }
+        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.25rem; text-shadow: 0 0 5px rgba(255, 77, 148, 0.15); }
         .music-player-container { margin-top: 25px; padding-top: 15px; border-top: 2px dashed #ffb3d9; display: flex; flex-direction: column; align-items: center; }
         audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; opacity: 0.8;}
         
-        #timerBox { background: rgba(255, 230, 242, 0.7); color: #ff4d94; padding: 10px; border-radius: 15px; font-weight: bold; margin-bottom: 15px; border: 1px dashed #ff4d94; }
+        #timerBox { background: rgba(255, 230, 242, 0.7); color: #ff4d94; padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 1px dashed #ff4d94; font-size: 1.1rem;}
         body.starlight-mode #timerBox { background: rgba(44, 83, 100, 0.7); color: #ffb3d9; border-color: #ffb3d9;}
 
         /* Floating Bubbles */
@@ -197,24 +194,27 @@
         </div>
 
         <div id="timerBox">
-            Time Together:<br><span id="timeDisplay">Calculating...</span>
+            Every second with you counts:<br><span id="timeDisplay">Calculating...</span>
         </div>
 
         <p id="typeLine1"></p>
         <p id="typeLine2" class="highlight"></p>
         <p id="typeLine3"></p>
+        <p id="typeLine4"></p>
+        <p id="typeLine5"></p>
+        <p id="typeLine6" class="highlight"></p>
 
         <div class="timeline">
-            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
-            <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
-            <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
+            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got infinitely brighter ✨</div>
+            <div class="time-item"><b>Today:</b> Still completely, hopelessly obsessed with you 🥰</div>
+            <div class="time-item"><b>Forever:</b> I'm never letting you go 🗽</div>
         </div>
         
         <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
         <p id="reasonDisplay"></p>
 
         <div class="music-player-container">
-            <p style="font-size: 0.9rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
+            <p style="font-size: 0.95rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
             <audio id="bgMusic" controls loop>
                 <source src="song1.mp3" type="audio/mpeg">
             </audio>
@@ -254,7 +254,6 @@
             setTimeout(() => {
                 env.style.display = 'none';
                 
-                // Show the main card directly (border wrap is gone!)
                 const card = document.getElementById('mainCard');
                 card.style.display = 'block';
                 
@@ -266,10 +265,13 @@
             }, 800);
         }
 
-        // --- Typewriter Logic ---
+        // --- UPGRADED: Longer Typewriter Logic ---
         const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
         const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
-        const text3 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
+        const text3 = "Every single day with you is a blessing. You make my world so incredibly bright.";
+        const text4 = "Your smile is my absolute favorite thing to see, and your laugh is my favorite sound.";
+        const text5 = "Even when we are apart, you are always on my mind and taking up all the space in my heart.";
+        const text6 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
 
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
@@ -281,16 +283,23 @@
                     i++;
                     setTimeout(type, speed);
                 } else if (callback) {
-                    setTimeout(callback, 500); 
+                    setTimeout(callback, 400); // Short pause before next line
                 }
             }
             type();
         }
 
         function startTypewriter() {
-            typeWriter("typeLine1", text1, 40, () => {
-                typeWriter("typeLine2", text2, 40, () => {
-                    typeWriter("typeLine3", text3, 40, null);
+            // Chaining all 6 lines together! Speed increased to 35 so it's not too slow.
+            typeWriter("typeLine1", text1, 35, () => {
+                typeWriter("typeLine2", text2, 35, () => {
+                    typeWriter("typeLine3", text3, 35, () => {
+                        typeWriter("typeLine4", text4, 35, () => {
+                            typeWriter("typeLine5", text5, 35, () => {
+                                typeWriter("typeLine6", text6, 35, null);
+                            });
+                        });
+                    });
                 });
             });
         }
@@ -334,7 +343,10 @@
             "I love our late-night talks. 🌙",
             "You make my world so bright. ☀️",
             "Your laugh is my favorite sound. 🎶",
-            "Every moment with you is an adventure. 🗽"
+            "Every moment with you is an adventure. 🗽",
+            "You are the strongest person I know. 💪",
+            "I could get lost in your eyes forever. 🥺",
+            "You are my literal dream come true! 💖"
         ];
 
         function generateReason() {
