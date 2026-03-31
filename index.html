@@ -99,11 +99,16 @@
             margin-top: 20px;
         }
 
-        .love-gif {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        /* 1. New Polaroid Photo Styling */
+        .love-photo {
+            width: 85%;
+            border: 10px solid white;
+            border-bottom: 30px solid white; /* Thicker bottom for that classic polaroid look */
+            border-radius: 4px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: rotate(-3deg); /* A cute little tilt */
+            margin: 0 auto 20px auto;
+            display: block;
         }
 
         .fade-line {
@@ -153,6 +158,12 @@
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
+
+        /* Animation for the interactive click-hearts */
+        @keyframes floatUp {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -100px) scale(1.5); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -164,7 +175,7 @@
         <button id="revealBtn" onclick="revealMessage()">Click Me 😸</button>
 
         <div id="secretContent">
-            <img src="image_0.jpg" alt="Ayuu and me" class="love-gif fade-line" id="line1">
+            <img src="1000165711.jpg" alt="Ayuu and me" class="love-photo fade-line" id="line1">
             
             <p class="fade-line" id="line2">I know things feel hard right now, and sometimes you feel lonely.</p>
             <p class="fade-line highlight" id="line3">But I want you to know: I am right here, and I am not going anywhere.</p>
@@ -198,7 +209,7 @@
             document.getElementById('introText').style.display = 'none';
             document.getElementById('secretContent').style.display = 'block';
             
-            setTimeout(() => { document.getElementById('line1').style.opacity = '1'; document.getElementById('line1').style.transform = 'translateY(0)'; }, 100);
+            setTimeout(() => { document.getElementById('line1').style.opacity = '1'; document.getElementById('line1').style.transform = 'translateY(0) rotate(-3deg)'; }, 100);
             setTimeout(() => { document.getElementById('line2').style.opacity = '1'; document.getElementById('line2').style.transform = 'translateY(0)'; }, 1500);
             setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
             setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
@@ -246,6 +257,27 @@
                 }, i * 100); 
             }
         }
+
+        // 2. New Interactive Background Hearts
+        document.body.addEventListener('click', function(event) {
+            // We don't want to spawn a heart if she is clicking a button
+            if(event.target.tagName === 'BUTTON') return;
+
+            const clickHeart = document.createElement('div');
+            clickHeart.innerText = '💖';
+            clickHeart.style.position = 'absolute';
+            // Places the heart exactly where she clicked
+            clickHeart.style.left = event.clientX + 'px';
+            clickHeart.style.top = event.clientY + 'px';
+            clickHeart.style.fontSize = '24px';
+            clickHeart.style.pointerEvents = 'none'; // So it doesn't block other clicks
+            clickHeart.style.animation = 'floatUp 1.5s ease-out forwards';
+            
+            document.body.appendChild(clickHeart);
+            
+            // Removes the heart from the code after the animation finishes
+            setTimeout(() => { clickHeart.remove(); }, 1500);
+        });
     </script>
 </body>
 </html>
