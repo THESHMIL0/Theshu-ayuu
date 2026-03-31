@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ayuu 💖</title>
+    
+    <style>
+        body {
+            background-color: #ffe6f2; /* Soft pastel pink background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevents scrolling so hearts stay on screen */
+            text-align: center;
+        }
+
+        .card-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 85%;
+            width: 400px;
+        }
+
+        h1 { 
+            color: #ff4d94; 
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p { 
+            color: #555; 
+            font-size: 1.2rem; 
+            line-height: 1.6;
+        }
+
+        /* Styling the interactive button */
+        button {
+            background-color: #ff4d94;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #ff1a75;
+        }
+
+        /* The hidden message styling */
+        #secretMessage {
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transition: opacity 1.5s ease-in; /* Smooth fade-in effect */
+            margin-top: 20px;
+        }
+
+        .highlight {
+            color: #ff4d94;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* CSS Animation for Floating Hearts */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ffb3d9;
+            animation: float 5s infinite ease-in;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart" style="left: 10%; animation-duration: 4s;">💖</div>
+    <div class="heart" style="left: 30%; animation-duration: 6s; animation-delay: 1s;">💖</div>
+    <div class="heart" style="left: 50%; animation-duration: 5s; animation-delay: 2s;">💖</div>
+    <div class="heart" style="left: 70%; animation-duration: 7s; animation-delay: 0.5s;">💖</div>
+    <div class="heart" style="left: 90%; animation-duration: 4.5s; animation-delay: 1.5s;">💖</div>
+
+    <div class="card-container">
+        <h1>Hi Ayuu 💖</h1>
+        <p id="introText">I coded a little something just for you...</p>
+        
+        <button id="revealBtn" onclick="revealMessage()">Click Me 😸</button>
+
+        <div id="secretMessage">
+            <p>I know things feel hard right now, and sometimes you feel lonely.</p>
+            <p class="highlight">But I want you to know: I am right here, and I am not going anywhere.</p>
+            <p>I love you so much. You are never alone as long as I'm around! 🗽💖</p>
+        </div>
+    </div>
+
+    <script>
+        function revealMessage() {
+            // 1. Hide the button and intro text
+            document.getElementById('revealBtn').style.display = 'none';
+            document.getElementById('introText').style.display = 'none';
+            
+            // 2. Target the secret message div
+            const msg = document.getElementById('secretMessage');
+            
+            // 3. Change display to block so it takes up space on the page
+            msg.style.display = 'block';
+            
+            // 4. Use a tiny delay before changing opacity to trigger the CSS transition properly
+            setTimeout(() => {
+                msg.style.opacity = 1;
+            }, 50);
+        }
+    </script>
+</body>
+</html>
