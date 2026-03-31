@@ -118,7 +118,6 @@
             font-size: 1.4rem;
         }
 
-        /* Styling for the new visible music player area */
         .music-player-container {
             margin-top: 25px;
             padding-top: 15px;
@@ -132,7 +131,6 @@
             margin-bottom: 8px;
         }
 
-        /* Makes the default audio player look a bit softer */
         audio {
             height: 35px;
             border-radius: 20px;
@@ -166,7 +164,7 @@
         <button id="revealBtn" onclick="revealMessage()">Click Me 😸</button>
 
         <div id="secretContent">
-            <img src="https://media.giphy.com/media/VbAFrRPOPGuMTZrpR1/giphy.gif" alt="Cute Hug" class="love-gif fade-line" id="line1">
+            <img src="image_0.png" alt="Ayuu and me" class="love-gif fade-line" id="line1">
             
             <p class="fade-line" id="line2">I know things feel hard right now, and sometimes you feel lonely.</p>
             <p class="fade-line highlight" id="line3">But I want you to know: I am right here, and I am not going anywhere.</p>
@@ -179,7 +177,7 @@
 
             <div class="fade-line music-player-container" id="line6">
                 <p class="call-note">🎵 (If we're on a call, your phone might mute the music! You can play it here 💕)</p>
-                <audio id="bgMusic" controls loop>
+                <audio id="bgMusic" controls loop autoplay>
                     <source src="song1.mp3" type="audio/mpeg">
                 </audio>
             </div>
@@ -188,14 +186,11 @@
 
     <script>
         function revealMessage() {
-            // Attempt to play the background music
             let music = document.getElementById('bgMusic');
-            
-            // The catch() prevents the code from breaking if the phone blocks the audio during a call
             let playPromise = music.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.log("Audio auto-play was prevented by the phone, usually because of an active call.");
+                    console.log("Audio auto-play was prevented.");
                 });
             }
 
@@ -208,8 +203,6 @@
             setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
             setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
             setTimeout(() => { document.getElementById('line5').style.opacity = '1'; document.getElementById('line5').style.transform = 'translateY(0)'; }, 7000);
-            
-            // Fades in the music player last
             setTimeout(() => { document.getElementById('line6').style.opacity = '1'; document.getElementById('line6').style.transform = 'translateY(0)'; }, 8000);
 
             createEmojiShower();
