@@ -63,18 +63,15 @@
         }
         .envelope:hover { transform: scale(1.05); }
 
-        /* MAIN CONTAINER: Now Truly Full Screen! */
+        /* MAIN CONTAINER: Full Screen */
         .card-container {
-            /* Removed the white box completely! */
             background: transparent; 
-            
-            /* Pushes content to fill the whole screen */
             width: 100vw;
             height: 100vh;
             max-width: 100%;
             max-height: 100vh;
             
-            padding: 60px 20px 100px 20px; /* Lots of breathing room */
+            padding: 60px 20px 100px 20px; 
             box-sizing: border-box; 
             
             overflow-y: auto; 
@@ -103,7 +100,7 @@
             color: #fff; 
             font-size: 3.5rem;
             margin-bottom: 25px;
-            text-shadow: 0 5px 15px rgba(255, 77, 148, 0.5); /* Beautiful pink shadow */
+            text-shadow: 0 5px 15px rgba(255, 77, 148, 0.5); 
             animation: gentlePulse 2s infinite alternate;
         }
 
@@ -129,7 +126,7 @@
             margin: 0 auto 30px auto; 
             overflow: hidden; 
             border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3); /* Pink tinted shadow */
+            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3); 
         }
 
         .love-photo {
@@ -166,7 +163,7 @@
         .bubble {
             position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4);
             border-radius: 50%; border: 1px solid rgba(255, 77, 148, 0.2);
-            animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: -1; /* Placed behind text */
+            animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: -1; 
         }
 
         /* Animations */
@@ -271,7 +268,7 @@
             }, 800);
         }
 
-        // --- Typewriter Logic ---
+        // --- Typewriter Logic (Auto-scroll removed!) ---
         const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
         const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
         const text3 = "Every single day with you is a blessing. You make my world so incredibly bright.";
@@ -282,16 +279,11 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             document.getElementById(elementId).innerHTML = "";
-            let card = document.getElementById('mainCard');
 
             function type() {
                 if (i < text.length) {
                     document.getElementById(elementId).innerHTML += text.charAt(i);
                     i++;
-                    
-                    // Keeps auto-scrolling down perfectly
-                    card.scrollTop = card.scrollHeight;
-                    
                     setTimeout(type, speed);
                 } else if (callback) {
                     setTimeout(callback, 400); 
