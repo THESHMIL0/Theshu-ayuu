@@ -8,11 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Base Styles & Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #ffe6f2; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #ff4d94; border-radius: 10px; }
-
         body {
             background: linear-gradient(135deg, #ffe6f2 0%, #ffb3d9 100%);
             font-family: 'Quicksand', sans-serif;
@@ -68,10 +63,10 @@
         }
         .envelope:hover { transform: scale(1.05); }
 
-        /* UPGRADE: The Container for the Animated Border */
+        /* The Container for the Animated Border */
         .border-animation-wrap {
             position: relative;
-            display: none; /* Hidden until envelope opens */
+            display: none; 
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
@@ -79,16 +74,15 @@
             max-width: 85%;
             width: 420px;
             border-radius: 25px;
-            padding: 5px; /* Creates the space for the border to show */
-            overflow: hidden; /* Keeps the animation inside the rounded corners */
+            padding: 5px; 
+            overflow: hidden; 
         }
 
-        /* UPGRADE: The Animated Moving Gradient Border */
+        /* The Animated Moving Gradient Border */
         .border-animation-wrap::before {
             content: '';
             position: absolute;
             top: -50%; left: -50%; width: 200%; height: 200%;
-            /* A dynamic pastel gradient */
             background: conic-gradient(
                 #ffb3d9, #ff4d94, #ff1a75, #ffb3d9, 
                 #ccf2ff, #80dfff, #ccf2ff, #ffb3d9
@@ -97,35 +91,41 @@
             z-index: -1;
         }
 
-        /* UPGRADE: Main Card Container (Glassmorphism Effect) */
+        /* Main Card Container (Glassmorphism Effect) */
         .card-container {
-            /* Semi-transparent background */
             background: rgba(255, 255, 255, 0.6); 
-            /* THE MAGIC: Frosted glass blur */
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px); /* For Safari */
+            -webkit-backdrop-filter: blur(15px); 
             
             padding: 40px;
-            border-radius: 22px; /* Slightly smaller than wrapper to look right */
+            border-radius: 22px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            max-height: 85vh; /* Adjusted for border padding */
+            max-height: 85vh; 
             overflow-y: auto; 
             position: relative;
             scroll-behavior: smooth;
-            width: 100%; /* Fills the border wrapper */
-            box-sizing: border-box; /* Ensures padding doesn't increase width */
+            width: 100%; 
+            box-sizing: border-box; 
+            
+            /* CLEANUP: Hide scrollbar visually but keep scrolling active */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* CLEANUP: Hide scrollbar for Chrome, Safari and Opera */
+        .card-container::-webkit-scrollbar {
+            display: none;
         }
 
         body.starlight-mode .card-container { background: rgba(26, 26, 46, 0.7); backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
         body.starlight-mode p { color: #ccc; }
 
-        /* Neon Glow Name */
+        /* Elegant Title (Neon removed) */
         h1 { 
             color: #fff; 
             font-size: 3rem;
             margin-bottom: 15px;
-            /* Enhanced Neon Glow */
-            text-shadow: 0 0 5px #fff, 0 0 10px #ffb3d9, 0 0 20px #ff4d94, 0 0 30px #ff1a75, 0 0 40px #ff1a75;
+            text-shadow: 2px 2px 4px rgba(255, 77, 148, 0.4); /* Soft, elegant shadow */
             animation: gentlePulse 2s infinite alternate;
         }
 
@@ -145,18 +145,17 @@
             position: relative; 
             width: 85%; 
             margin: 0 auto 25px auto; 
-            overflow: hidden; /* Required for the Ken Burns effect */
+            overflow: hidden; 
             border: 8px solid white; 
             border-bottom: 25px solid white; 
             border-radius: 4px; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* UPGRADE: The Ken Burns Photo Effect */
+        /* The Ken Burns Photo Effect */
         .love-photo {
             width: 100%; 
             display: block; 
-            /* Start slightly zoomed in for smooth animation */
             transform: scale(1.1) translateX(0);
             animation: kenBurns 20s infinite alternate ease-in-out;
         }
@@ -195,13 +194,11 @@
         @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatUpBubbles { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } }
         
-        /* UPGRADE: Border Rotation Animation */
         @keyframes rotateGradient {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* UPGRADE: Ken Burns Photo Animation (Gentle zoom and pan) */
         @keyframes kenBurns {
             0% { transform: scale(1.1) translateX(0%) translateY(0%); }
             100% { transform: scale(1.25) translateX(-2%) translateY(-1%); }
@@ -288,19 +285,19 @@
             setTimeout(() => {
                 env.style.display = 'none';
                 
-                // Show the card wrapper (which handles the fade-in and the border animation)
+                // Show the card wrapper
                 const cardWrap = document.getElementById('mainCardWrap');
                 cardWrap.style.display = 'block';
                 
                 setTimeout(() => {
                     cardWrap.style.opacity = '1';
                     cardWrap.style.transform = 'translateY(0)';
-                    startTypewriter(); // Trigger typing effect!
+                    startTypewriter(); 
                 }, 50);
             }, 800);
         }
 
-        // --- Typewriter & Auto-Scroll Logic ---
+        // --- Typewriter Logic (Cleaned up auto-scroll) ---
         const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
         const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
         const text3 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
@@ -308,16 +305,11 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             document.getElementById(elementId).innerHTML = "";
-            let card = document.getElementById('mainCard'); 
 
             function type() {
                 if (i < text.length) {
                     document.getElementById(elementId).innerHTML += text.charAt(i);
                     i++;
-                    
-                    // Auto-scroll to the bottom of the card as it types!
-                    card.scrollTop = card.scrollHeight;
-                    
                     setTimeout(type, speed);
                 } else if (callback) {
                     setTimeout(callback, 500); 
@@ -327,7 +319,6 @@
         }
 
         function startTypewriter() {
-            // Chains the typing so they happen one after another
             typeWriter("typeLine1", text1, 40, () => {
                 typeWriter("typeLine2", text2, 40, () => {
                     typeWriter("typeLine3", text3, 40, null);
