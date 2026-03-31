@@ -9,7 +9,6 @@
     
     <style>
         body {
-            /* Upgraded to a beautiful pastel gradient */
             background: linear-gradient(135deg, #ffe6f2 0%, #ffb3d9 100%);
             font-family: 'Quicksand', sans-serif;
             display: flex;
@@ -24,8 +23,7 @@
         .card-container {
             background: white;
             padding: 40px;
-            border-radius: 25px; /* Softer, rounder corners */
-            /* Upgraded to a soft pink glowing shadow */
+            border-radius: 25px; 
             box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3);
             z-index: 10;
             max-width: 85%;
@@ -57,22 +55,34 @@
             margin-top: 20px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
-            /* Added a continuous pulse animation */
             animation: pulse 2s infinite;
         }
 
         button:hover {
             background-color: #ff1a75;
             transform: scale(1.1);
-            animation: none; /* Stops pulsing when she hovers over it */
+            animation: none; 
         }
 
-        /* The hidden message styling */
-        #secretMessage {
-            display: none; 
-            opacity: 0;
-            transition: opacity 1.5s ease-in; 
+        /* --- NEW STYLES FOR IMPROVEMENTS --- */
+        
+        #secretContent {
+            display: none; /* Hides the whole secret section initially */
             margin-top: 20px;
+        }
+
+        .love-gif {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* The class we will use to fade elements in one by one */
+        .fade-line {
+            opacity: 0;
+            transform: translateY(10px); /* Starts slightly lower */
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth float up and fade in */
         }
 
         .highlight {
@@ -88,7 +98,6 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0); }
         }
 
-        /* New dynamic falling emojis */
         .falling-emoji {
             position: absolute;
             z-index: 1;
@@ -109,57 +118,55 @@
         
         <button id="revealBtn" onclick="revealMessage()">Click Me 😸</button>
 
-        <div id="secretMessage">
-            <p>I know things feel hard right now, and sometimes you feel lonely.</p>
-            <p class="highlight">But I want you to know: I am right here, and I am not going anywhere.</p>
-            <p>I love you so much. You are never alone as long as I'm around! 🗽💖</p>
+        <div id="secretContent">
+            <img src="https://media.giphy.com/media/VbAFrRPOPGuMTZrpR1/giphy.gif" alt="Cute Hug" class="love-gif fade-line" id="line1">
+            
+            <p class="fade-line" id="line2">I know things feel hard right now, and sometimes you feel lonely.</p>
+            <p class="fade-line highlight" id="line3">But I want you to know: I am right here, and I am not going anywhere.</p>
+            <p class="fade-line" id="line4">I love you so much. You are never alone as long as I'm around! 🗽💖</p>
         </div>
     </div>
 
     <script>
         function revealMessage() {
-            // Reveal the message
+            // Hide intro
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('introText').style.display = 'none';
             
-            const msg = document.getElementById('secretMessage');
-            msg.style.display = 'block';
+            // Show the container
+            document.getElementById('secretContent').style.display = 'block';
             
-            setTimeout(() => {
-                msg.style.opacity = 1;
-            }, 50);
+            // Staggered Fade-in logic using setTimeout
+            // Line 1 (The GIF) fades in immediately
+            setTimeout(() => { document.getElementById('line1').style.opacity = '1'; document.getElementById('line1').style.transform = 'translateY(0)'; }, 100);
+            
+            // Line 2 fades in after 1.5 seconds
+            setTimeout(() => { document.getElementById('line2').style.opacity = '1'; document.getElementById('line2').style.transform = 'translateY(0)'; }, 1500);
+            
+            // Line 3 fades in after 3.5 seconds
+            setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
+            
+            // Line 4 fades in after 5.5 seconds
+            setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
 
-            // Trigger the magical emoji shower!
+            // Trigger the emoji shower
             createEmojiShower();
         }
 
         function createEmojiShower() {
-            const emojis = ['💖', '😸', '🗽', '✨', '🌸']; // The cute symbols!
-            
-            // Loop to create 50 falling elements
+            const emojis = ['💖', '😸', '🗽', '✨', '🌸']; 
             for(let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
                     el.classList.add('falling-emoji');
-                    // Pick a random emoji from our list
                     el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                    
-                    // Randomize the starting position across the width of the screen
                     el.style.left = Math.random() * 100 + 'vw';
-                    
-                    // Randomize the size of the emojis
                     el.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                    
-                    // Randomize the falling speed between 3 and 6 seconds
                     el.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                    
                     document.body.appendChild(el);
                     
-                    // Clean up the emoji after it falls off screen so the browser doesn't lag
-                    setTimeout(() => {
-                        el.remove();
-                    }, 6000);
-                }, i * 100); // Staggers them so they don't fall all at once
+                    setTimeout(() => { el.remove(); }, 6000);
+                }, i * 100); 
             }
         }
     </script>
