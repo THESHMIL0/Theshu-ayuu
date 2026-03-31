@@ -68,33 +68,64 @@
         }
         .envelope:hover { transform: scale(1.05); }
 
-        /* Main Card Container */
-        .card-container {
-            background: white;
-            padding: 40px;
-            border-radius: 25px; 
-            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3);
-            z-index: 10;
-            max-width: 85%;
-            width: 420px;
-            max-height: 90vh; 
-            overflow-y: auto; 
+        /* UPGRADE: The Container for the Animated Border */
+        .border-animation-wrap {
             position: relative;
-            display: none; 
+            display: none; /* Hidden until envelope opens */
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
-            scroll-behavior: smooth;
+            z-index: 10;
+            max-width: 85%;
+            width: 420px;
+            border-radius: 25px;
+            padding: 5px; /* Creates the space for the border to show */
+            overflow: hidden; /* Keeps the animation inside the rounded corners */
         }
-        body.starlight-mode .card-container { background: #1a1a2e; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
+
+        /* UPGRADE: The Animated Moving Gradient Border */
+        .border-animation-wrap::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            /* A dynamic pastel gradient */
+            background: conic-gradient(
+                #ffb3d9, #ff4d94, #ff1a75, #ffb3d9, 
+                #ccf2ff, #80dfff, #ccf2ff, #ffb3d9
+            );
+            animation: rotateGradient 4s linear infinite;
+            z-index: -1;
+        }
+
+        /* UPGRADE: Main Card Container (Glassmorphism Effect) */
+        .card-container {
+            /* Semi-transparent background */
+            background: rgba(255, 255, 255, 0.6); 
+            /* THE MAGIC: Frosted glass blur */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); /* For Safari */
+            
+            padding: 40px;
+            border-radius: 22px; /* Slightly smaller than wrapper to look right */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-height: 85vh; /* Adjusted for border padding */
+            overflow-y: auto; 
+            position: relative;
+            scroll-behavior: smooth;
+            width: 100%; /* Fills the border wrapper */
+            box-sizing: border-box; /* Ensures padding doesn't increase width */
+        }
+
+        body.starlight-mode .card-container { background: rgba(26, 26, 46, 0.7); backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
         body.starlight-mode p { color: #ccc; }
 
         /* Neon Glow Name */
         h1 { 
             color: #fff; 
             font-size: 3rem;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px #ffb3d9, 0 0 20px #ff4d94, 0 0 30px #ff1a75;
+            margin-bottom: 15px;
+            /* Enhanced Neon Glow */
+            text-shadow: 0 0 5px #fff, 0 0 10px #ffb3d9, 0 0 20px #ff4d94, 0 0 30px #ff1a75, 0 0 40px #ff1a75;
             animation: gentlePulse 2s infinite alternate;
         }
 
@@ -110,11 +141,24 @@
         .theme-btn { position: absolute; top: 15px; right: 15px; background: none; font-size: 1.5rem; padding: 5px; }
 
         /* Single Photo Styling */
-        .photo-container { position: relative; width: 85%; margin: 0 auto 20px auto; }
+        .photo-container { 
+            position: relative; 
+            width: 85%; 
+            margin: 0 auto 25px auto; 
+            overflow: hidden; /* Required for the Ken Burns effect */
+            border: 8px solid white; 
+            border-bottom: 25px solid white; 
+            border-radius: 4px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* UPGRADE: The Ken Burns Photo Effect */
         .love-photo {
-            width: 100%; border: 8px solid white; border-bottom: 25px solid white; 
-            border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            display: block; transition: all 0.4s ease;
+            width: 100%; 
+            display: block; 
+            /* Start slightly zoomed in for smooth animation */
+            transform: scale(1.1) translateX(0);
+            animation: kenBurns 20s infinite alternate ease-in-out;
         }
 
         /* Timeline of Us */
@@ -128,28 +172,40 @@
         body.starlight-mode .time-item { color: #ccc; }
         .time-item::before {
             content: "💖"; position: absolute; left: -28px; top: -2px; font-size: 1rem;
-            background: white; border-radius: 50%; padding: 2px;
+            background: rgba(255,255,255,0.8); border-radius: 50%; padding: 2px;
         }
         body.starlight-mode .time-item::before { background: #1a1a2e; }
 
-        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.3rem; }
+        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.3rem; text-shadow: 0 0 5px rgba(255, 77, 148, 0.2); }
         .music-player-container { margin-top: 25px; padding-top: 15px; border-top: 2px dashed #ffb3d9; display: flex; flex-direction: column; align-items: center; }
-        audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; }
+        audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; opacity: 0.8;}
         
-        #timerBox { background: #ffe6f2; color: #ff4d94; padding: 10px; border-radius: 15px; font-weight: bold; margin-bottom: 15px; border: 1px dashed #ff4d94; }
-        body.starlight-mode #timerBox { background: #2c5364; color: #ffb3d9; border-color: #ffb3d9;}
+        #timerBox { background: rgba(255, 230, 242, 0.7); color: #ff4d94; padding: 10px; border-radius: 15px; font-weight: bold; margin-bottom: 15px; border: 1px dashed #ff4d94; }
+        body.starlight-mode #timerBox { background: rgba(44, 83, 100, 0.7); color: #ffb3d9; border-color: #ffb3d9;}
 
         /* Floating Bubbles */
         .bubble {
-            position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%; border: 1px solid rgba(255, 77, 148, 0.3);
+            position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%; border: 1px solid rgba(255, 77, 148, 0.2);
             animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: 1;
         }
 
         /* Animations */
-        @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+        @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.03); } }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatUpBubbles { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } }
+        
+        /* UPGRADE: Border Rotation Animation */
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* UPGRADE: Ken Burns Photo Animation (Gentle zoom and pan) */
+        @keyframes kenBurns {
+            0% { transform: scale(1.1) translateX(0%) translateY(0%); }
+            100% { transform: scale(1.25) translateX(-2%) translateY(-1%); }
+        }
     </style>
 </head>
 <body>
@@ -163,37 +219,39 @@
         <div class="envelope"></div>
     </div>
 
-    <div class="card-container" id="mainCard">
-        <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
+    <div class="border-animation-wrap" id="mainCardWrap">
+        <div class="card-container" id="mainCard">
+            <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
 
-        <h1>Hi Ayuu</h1>
-        
-        <div class="photo-container">
-            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
-        </div>
+            <h1>Hi Ayuu</h1>
+            
+            <div class="photo-container">
+                <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
+            </div>
 
-        <div id="timerBox">
-            Time Together:<br><span id="timeDisplay">Calculating...</span>
-        </div>
+            <div id="timerBox">
+                Time Together:<br><span id="timeDisplay">Calculating...</span>
+            </div>
 
-        <p id="typeLine1"></p>
-        <p id="typeLine2" class="highlight"></p>
-        <p id="typeLine3"></p>
+            <p id="typeLine1"></p>
+            <p id="typeLine2" class="highlight"></p>
+            <p id="typeLine3"></p>
 
-        <div class="timeline">
-            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
-            <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
-            <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
-        </div>
-        
-        <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
-        <p id="reasonDisplay"></p>
+            <div class="timeline">
+                <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
+                <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
+                <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
+            </div>
+            
+            <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
+            <p id="reasonDisplay"></p>
 
-        <div class="music-player-container">
-            <p style="font-size: 0.9rem; margin: 0 0 5px 0;">🎵 Our Song</p>
-            <audio id="bgMusic" controls loop>
-                <source src="song1.mp3" type="audio/mpeg">
-            </audio>
+            <div class="music-player-container">
+                <p style="font-size: 0.9rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
+                <audio id="bgMusic" controls loop>
+                    <source src="song1.mp3" type="audio/mpeg">
+                </audio>
+            </div>
         </div>
     </div>
 
@@ -229,12 +287,14 @@
             
             setTimeout(() => {
                 env.style.display = 'none';
-                // Show the main card
-                const card = document.getElementById('mainCard');
-                card.style.display = 'block';
+                
+                // Show the card wrapper (which handles the fade-in and the border animation)
+                const cardWrap = document.getElementById('mainCardWrap');
+                cardWrap.style.display = 'block';
+                
                 setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+                    cardWrap.style.opacity = '1';
+                    cardWrap.style.transform = 'translateY(0)';
                     startTypewriter(); // Trigger typing effect!
                 }, 50);
             }, 800);
@@ -267,6 +327,7 @@
         }
 
         function startTypewriter() {
+            // Chains the typing so they happen one after another
             typeWriter("typeLine1", text1, 40, () => {
                 typeWriter("typeLine2", text2, 40, () => {
                     typeWriter("typeLine3", text3, 40, null);
