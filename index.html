@@ -18,6 +18,8 @@
             margin: 0;
             overflow: hidden; 
             text-align: center;
+            /* 1. Custom Heart Cursor for the whole page */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>💖</text></svg>"), auto;
         }
 
         .card-container {
@@ -28,6 +30,8 @@
             z-index: 10;
             max-width: 85%;
             width: 420px;
+            max-height: 90vh; /* Prevents card from getting too tall */
+            overflow-y: auto; /* Adds a scrollbar inside the card if needed */
         }
 
         h1 { 
@@ -41,6 +45,7 @@
             color: #666; 
             font-size: 1.25rem; 
             line-height: 1.6;
+            margin-bottom: 10px;
         }
 
         button {
@@ -50,24 +55,51 @@
             padding: 15px 35px;
             font-size: 1.3rem;
             border-radius: 50px;
-            cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 20px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
+            /* Custom Cat Paw Cursor for buttons */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🐾</text></svg>"), pointer;
+        }
+
+        #revealBtn {
             animation: pulse 2s infinite;
         }
 
-        button:hover {
+        #revealBtn:hover {
             background-color: #ff1a75;
             transform: scale(1.1);
             animation: none; 
         }
 
-        /* --- NEW STYLES FOR IMPROVEMENTS --- */
-        
+        /* Styling for the new Generator Button */
+        .reason-btn {
+            background-color: white;
+            color: #ff4d94;
+            border: 2px solid #ff4d94;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        .reason-btn:hover {
+            background-color: #ffe6f2;
+            transform: scale(1.05);
+        }
+
+        /* The animated text for the reasons */
+        #reasonDisplay {
+            color: #ff4d94;
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 15px;
+            min-height: 30px; 
+            transition: transform 0.2s ease;
+        }
+
         #secretContent {
-            display: none; /* Hides the whole secret section initially */
+            display: none; 
             margin-top: 20px;
         }
 
@@ -78,11 +110,10 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* The class we will use to fade elements in one by one */
         .fade-line {
             opacity: 0;
-            transform: translateY(10px); /* Starts slightly lower */
-            transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth float up and fade in */
+            transform: translateY(10px); 
+            transition: opacity 1s ease-out, transform 1s ease-out; 
         }
 
         .highlight {
@@ -91,7 +122,6 @@
             font-size: 1.4rem;
         }
 
-        /* Animations */
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); }
             50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 148, 0); }
@@ -112,6 +142,10 @@
 </head>
 <body>
 
+    <audio id="bgMusic" loop>
+        <source src="song1.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="card-container">
         <h1>Hi Ayuu 💖</h1>
         <p id="introText">I coded a little something just for you...</p>
@@ -124,33 +158,60 @@
             <p class="fade-line" id="line2">I know things feel hard right now, and sometimes you feel lonely.</p>
             <p class="fade-line highlight" id="line3">But I want you to know: I am right here, and I am not going anywhere.</p>
             <p class="fade-line" id="line4">I love you so much. You are never alone as long as I'm around! 🗽💖</p>
+            
+            <div class="fade-line" id="line5">
+                <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
+                <p id="reasonDisplay"></p>
+            </div>
         </div>
     </div>
 
     <script>
         function revealMessage() {
-            // Hide intro
+            // Play the background music!
+            document.getElementById('bgMusic').play();
+
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('introText').style.display = 'none';
-            
-            // Show the container
             document.getElementById('secretContent').style.display = 'block';
             
-            // Staggered Fade-in logic using setTimeout
-            // Line 1 (The GIF) fades in immediately
             setTimeout(() => { document.getElementById('line1').style.opacity = '1'; document.getElementById('line1').style.transform = 'translateY(0)'; }, 100);
-            
-            // Line 2 fades in after 1.5 seconds
             setTimeout(() => { document.getElementById('line2').style.opacity = '1'; document.getElementById('line2').style.transform = 'translateY(0)'; }, 1500);
-            
-            // Line 3 fades in after 3.5 seconds
             setTimeout(() => { document.getElementById('line3').style.opacity = '1'; document.getElementById('line3').style.transform = 'translateY(0)'; }, 3500);
-            
-            // Line 4 fades in after 5.5 seconds
             setTimeout(() => { document.getElementById('line4').style.opacity = '1'; document.getElementById('line4').style.transform = 'translateY(0)'; }, 5500);
+            
+            // Fades in the generator button last
+            setTimeout(() => { document.getElementById('line5').style.opacity = '1'; document.getElementById('line5').style.transform = 'translateY(0)'; }, 7000);
 
-            // Trigger the emoji shower
             createEmojiShower();
+        }
+
+        // --- JavaScript for the Reason Generator ---
+        const reasons = [
+            "You have the most beautiful smile. ✨",
+            "I love our late-night talks. 🌙",
+            "You make my world so bright. ☀️",
+            "Your laugh is my favorite sound. 🎶",
+            "You have the kindest heart. 💖",
+            "Every moment with you is an adventure. 🗽",
+            "You understand me like no one else. 😸",
+            "You are stronger than you know. 💪",
+            "You are my favorite person in the world! 🥰"
+        ];
+
+        function generateReason() {
+            const display = document.getElementById('reasonDisplay');
+            // Pick a random number between 0 and the amount of reasons we have
+            const randomIndex = Math.floor(Math.random() * reasons.length);
+            
+            // Update the text on the screen
+            display.innerText = reasons[randomIndex];
+            
+            // Add a little pop animation when the text changes
+            display.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                display.style.transform = 'scale(1)';
+            }, 200);
         }
 
         function createEmojiShower() {
