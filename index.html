@@ -84,7 +84,6 @@
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
-            /* Scroll smooth logic */
             scroll-behavior: smooth;
         }
         body.starlight-mode .card-container { background: #1a1a2e; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
@@ -110,20 +109,13 @@
         button:hover { background-color: #ff1a75; transform: scale(1.05); }
         .theme-btn { position: absolute; top: 15px; right: 15px; background: none; font-size: 1.5rem; padding: 5px; }
 
-        /* Photo Slideshow */
-        .slideshow-container { position: relative; width: 85%; margin: 0 auto 20px auto; }
+        /* Single Photo Styling */
+        .photo-container { position: relative; width: 85%; margin: 0 auto 20px auto; }
         .love-photo {
             width: 100%; border: 8px solid white; border-bottom: 25px solid white; 
             border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             display: block; transition: all 0.4s ease;
         }
-        .prev-btn, .next-btn {
-            position: absolute; top: 40%; background: rgba(255, 77, 148, 0.8);
-            color: white; border: none; padding: 10px; cursor: pointer; border-radius: 50%;
-            font-size: 1rem; transform: translateY(-50%); width: 40px; height: 40px;
-        }
-        .prev-btn { left: -15px; }
-        .next-btn { right: -15px; }
 
         /* Timeline of Us */
         .timeline {
@@ -176,10 +168,8 @@
 
         <h1>Hi Ayuu</h1>
         
-        <div class="slideshow-container">
-            <button class="prev-btn" onclick="changeSlide(-1)">❮</button>
-            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="slideImg">
-            <button class="next-btn" onclick="changeSlide(1)">❯</button>
+        <div class="photo-container">
+            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
         </div>
 
         <div id="timerBox">
@@ -220,7 +210,7 @@
         };
 
         function openEnvelope() {
-            // NEW FEATURE: Request Full Screen Mode!
+            // Request Full Screen Mode
             let docElm = document.documentElement;
             if (docElm.requestFullscreen) {
                 docElm.requestFullscreen().catch(err => console.log("Fullscreen prevented:", err));
@@ -258,14 +248,14 @@
         function typeWriter(elementId, text, speed, callback) {
             let i = 0;
             document.getElementById(elementId).innerHTML = "";
-            let card = document.getElementById('mainCard'); // We target the scrollable card
+            let card = document.getElementById('mainCard'); 
 
             function type() {
                 if (i < text.length) {
                     document.getElementById(elementId).innerHTML += text.charAt(i);
                     i++;
                     
-                    // NEW FEATURE: Auto-scroll to the bottom of the card as it types!
+                    // Auto-scroll to the bottom of the card as it types!
                     card.scrollTop = card.scrollHeight;
                     
                     setTimeout(type, speed);
@@ -282,17 +272,6 @@
                     typeWriter("typeLine3", text3, 40, null);
                 });
             });
-        }
-
-        // --- Slideshow Logic ---
-        const images = ["image_0.jpg", "image_1.jpg", "image_2.jpg"];
-        let currentImgIndex = 0;
-
-        function changeSlide(direction) {
-            currentImgIndex += direction;
-            if (currentImgIndex >= images.length) currentImgIndex = 0;
-            if (currentImgIndex < 0) currentImgIndex = images.length - 1;
-            document.getElementById('slideImg').src = images[currentImgIndex];
         }
 
         // --- Timer Logic (January 14, 2026) ---
