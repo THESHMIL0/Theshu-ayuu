@@ -63,56 +63,34 @@
         }
         .envelope:hover { transform: scale(1.05); }
 
-        /* The Container for the Animated Border */
-        .border-animation-wrap {
-            position: relative;
-            display: none; 
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
-            z-index: 10;
-            max-width: 85%;
-            width: 420px;
-            border-radius: 25px;
-            padding: 5px; 
-            overflow: hidden; 
-        }
-
-        /* The Animated Moving Gradient Border */
-        .border-animation-wrap::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(
-                #ffb3d9, #ff4d94, #ff1a75, #ffb3d9, 
-                #ccf2ff, #80dfff, #ccf2ff, #ffb3d9
-            );
-            animation: rotateGradient 4s linear infinite;
-            z-index: -1;
-        }
-
-        /* Main Card Container (Glassmorphism Effect) */
+        /* Main Card Container (Clean Frosted Glass) */
         .card-container {
             background: rgba(255, 255, 255, 0.6); 
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px); 
             
             padding: 40px;
-            border-radius: 22px; 
+            border-radius: 25px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             max-height: 85vh; 
             overflow-y: auto; 
             position: relative;
             scroll-behavior: smooth;
-            width: 100%; 
+            width: 420px;
+            max-width: 85%;
             box-sizing: border-box; 
             
-            /* CLEANUP: Hide scrollbar visually but keep scrolling active */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            /* Hide initially until envelope is clicked */
+            display: none; 
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+            
+            /* Hide scrollbar visually but keep scrolling active */
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
         
-        /* CLEANUP: Hide scrollbar for Chrome, Safari and Opera */
         .card-container::-webkit-scrollbar {
             display: none;
         }
@@ -120,12 +98,12 @@
         body.starlight-mode .card-container { background: rgba(26, 26, 46, 0.7); backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
         body.starlight-mode p { color: #ccc; }
 
-        /* Elegant Title (Neon removed) */
+        /* Elegant Title */
         h1 { 
             color: #fff; 
             font-size: 3rem;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(255, 77, 148, 0.4); /* Soft, elegant shadow */
+            text-shadow: 2px 2px 4px rgba(255, 77, 148, 0.4); 
             animation: gentlePulse 2s infinite alternate;
         }
 
@@ -152,7 +130,6 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* The Ken Burns Photo Effect */
         .love-photo {
             width: 100%; 
             display: block; 
@@ -193,12 +170,6 @@
         @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.03); } }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatUpBubbles { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } }
-        
-        @keyframes rotateGradient {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @keyframes kenBurns {
             0% { transform: scale(1.1) translateX(0%) translateY(0%); }
             100% { transform: scale(1.25) translateX(-2%) translateY(-1%); }
@@ -216,39 +187,37 @@
         <div class="envelope"></div>
     </div>
 
-    <div class="border-animation-wrap" id="mainCardWrap">
-        <div class="card-container" id="mainCard">
-            <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
+    <div class="card-container" id="mainCard">
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
 
-            <h1>Hi Ayuu</h1>
-            
-            <div class="photo-container">
-                <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
-            </div>
+        <h1>Hi Ayuu</h1>
+        
+        <div class="photo-container">
+            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
+        </div>
 
-            <div id="timerBox">
-                Time Together:<br><span id="timeDisplay">Calculating...</span>
-            </div>
+        <div id="timerBox">
+            Time Together:<br><span id="timeDisplay">Calculating...</span>
+        </div>
 
-            <p id="typeLine1"></p>
-            <p id="typeLine2" class="highlight"></p>
-            <p id="typeLine3"></p>
+        <p id="typeLine1"></p>
+        <p id="typeLine2" class="highlight"></p>
+        <p id="typeLine3"></p>
 
-            <div class="timeline">
-                <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
-                <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
-                <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
-            </div>
-            
-            <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
-            <p id="reasonDisplay"></p>
+        <div class="timeline">
+            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
+            <div class="time-item"><b>Today:</b> Still completely obsessed with you 🥰</div>
+            <div class="time-item"><b>Forever:</b> Never letting you go 🗽</div>
+        </div>
+        
+        <button class="reason-btn" onclick="generateReason()">Tell me why you love me 🌸</button>
+        <p id="reasonDisplay"></p>
 
-            <div class="music-player-container">
-                <p style="font-size: 0.9rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
-                <audio id="bgMusic" controls loop>
-                    <source src="song1.mp3" type="audio/mpeg">
-                </audio>
-            </div>
+        <div class="music-player-container">
+            <p style="font-size: 0.9rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
+            <audio id="bgMusic" controls loop>
+                <source src="song1.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </div>
 
@@ -269,7 +238,7 @@
             let docElm = document.documentElement;
             if (docElm.requestFullscreen) {
                 docElm.requestFullscreen().catch(err => console.log("Fullscreen prevented:", err));
-            } else if (docElm.webkitRequestFullscreen) { /* Safari/iOS */
+            } else if (docElm.webkitRequestFullscreen) { 
                 docElm.webkitRequestFullscreen();
             }
 
@@ -285,19 +254,19 @@
             setTimeout(() => {
                 env.style.display = 'none';
                 
-                // Show the card wrapper
-                const cardWrap = document.getElementById('mainCardWrap');
-                cardWrap.style.display = 'block';
+                // Show the main card directly (border wrap is gone!)
+                const card = document.getElementById('mainCard');
+                card.style.display = 'block';
                 
                 setTimeout(() => {
-                    cardWrap.style.opacity = '1';
-                    cardWrap.style.transform = 'translateY(0)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
                     startTypewriter(); 
                 }, 50);
             }, 800);
         }
 
-        // --- Typewriter Logic (Cleaned up auto-scroll) ---
+        // --- Typewriter Logic ---
         const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
         const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
         const text3 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
