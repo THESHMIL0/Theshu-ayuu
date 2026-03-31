@@ -5,96 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Ayuu 💖</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            background-color: #ffe6f2; /* Soft pastel pink background */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Upgraded to a beautiful pastel gradient */
+            background: linear-gradient(135deg, #ffe6f2 0%, #ffb3d9 100%);
+            font-family: 'Quicksand', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevents scrolling so hearts stay on screen */
+            overflow: hidden; 
             text-align: center;
         }
 
         .card-container {
             background: white;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 25px; /* Softer, rounder corners */
+            /* Upgraded to a soft pink glowing shadow */
+            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3);
             z-index: 10;
             max-width: 85%;
-            width: 400px;
+            width: 420px;
         }
 
         h1 { 
             color: #ff4d94; 
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(255, 77, 148, 0.1);
         }
 
         p { 
-            color: #555; 
-            font-size: 1.2rem; 
+            color: #666; 
+            font-size: 1.25rem; 
             line-height: 1.6;
         }
 
-        /* Styling the interactive button */
         button {
             background-color: #ff4d94;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 15px 35px;
+            font-size: 1.3rem;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: all 0.3s ease;
             margin-top: 20px;
-            font-weight: bold;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            /* Added a continuous pulse animation */
+            animation: pulse 2s infinite;
         }
 
         button:hover {
-            transform: scale(1.05);
             background-color: #ff1a75;
+            transform: scale(1.1);
+            animation: none; /* Stops pulsing when she hovers over it */
         }
 
         /* The hidden message styling */
         #secretMessage {
-            display: none; /* Hidden by default */
+            display: none; 
             opacity: 0;
-            transition: opacity 1.5s ease-in; /* Smooth fade-in effect */
+            transition: opacity 1.5s ease-in; 
             margin-top: 20px;
         }
 
         .highlight {
             color: #ff4d94;
-            font-weight: bold;
-            font-size: 1.3rem;
+            font-weight: 700;
+            font-size: 1.4rem;
         }
 
-        /* CSS Animation for Floating Hearts */
-        .heart {
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 148, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 148, 0); }
+        }
+
+        /* New dynamic falling emojis */
+        .falling-emoji {
             position: absolute;
-            font-size: 24px;
-            color: #ffb3d9;
-            animation: float 5s infinite ease-in;
             z-index: 1;
+            top: -10vh;
+            animation: fall linear forwards;
         }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
-
-    <div class="heart" style="left: 10%; animation-duration: 4s;">💖</div>
-    <div class="heart" style="left: 30%; animation-duration: 6s; animation-delay: 1s;">💖</div>
-    <div class="heart" style="left: 50%; animation-duration: 5s; animation-delay: 2s;">💖</div>
-    <div class="heart" style="left: 70%; animation-duration: 7s; animation-delay: 0.5s;">💖</div>
-    <div class="heart" style="left: 90%; animation-duration: 4.5s; animation-delay: 1.5s;">💖</div>
 
     <div class="card-container">
         <h1>Hi Ayuu 💖</h1>
@@ -111,20 +118,49 @@
 
     <script>
         function revealMessage() {
-            // 1. Hide the button and intro text
+            // Reveal the message
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('introText').style.display = 'none';
             
-            // 2. Target the secret message div
             const msg = document.getElementById('secretMessage');
-            
-            // 3. Change display to block so it takes up space on the page
             msg.style.display = 'block';
             
-            // 4. Use a tiny delay before changing opacity to trigger the CSS transition properly
             setTimeout(() => {
                 msg.style.opacity = 1;
             }, 50);
+
+            // Trigger the magical emoji shower!
+            createEmojiShower();
+        }
+
+        function createEmojiShower() {
+            const emojis = ['💖', '😸', '🗽', '✨', '🌸']; // The cute symbols!
+            
+            // Loop to create 50 falling elements
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.classList.add('falling-emoji');
+                    // Pick a random emoji from our list
+                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    // Randomize the starting position across the width of the screen
+                    el.style.left = Math.random() * 100 + 'vw';
+                    
+                    // Randomize the size of the emojis
+                    el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    
+                    // Randomize the falling speed between 3 and 6 seconds
+                    el.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    
+                    document.body.appendChild(el);
+                    
+                    // Clean up the emoji after it falls off screen so the browser doesn't lag
+                    setTimeout(() => {
+                        el.remove();
+                    }, 6000);
+                }, i * 100); // Staggers them so they don't fall all at once
+            }
         }
     </script>
 </body>
