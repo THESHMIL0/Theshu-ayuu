@@ -11,10 +11,17 @@
         body {
             background: linear-gradient(135deg, #ffe6f2 0%, #ffb3d9 100%);
             font-family: 'Quicksand', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; margin: 0; overflow: hidden; text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; 
+            text-align: center;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>💖</text></svg>"), auto;
             transition: background 1s ease; 
         }
+
         body.starlight-mode { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
 
         #loader {
@@ -24,6 +31,7 @@
             transition: opacity 1s ease;
         }
         .loader-heart { font-size: 5rem; animation: gentlePulse 1s infinite alternate; }
+        .loader-text { color: #ff4d94; font-weight: bold; margin-top: 20px; font-size: 1.2rem; }
 
         #envelope-container { position: fixed; z-index: 50; cursor: pointer; transition: opacity 1s ease, transform 1s ease; }
         .envelope {
@@ -32,59 +40,113 @@
             color: white; font-weight: bold; font-size: 1.5rem; animation: floatEnv 3s infinite ease-in-out; border: 4px solid #fff;
         }
         .envelope::after { content: "Tap to Open 💌"; position: absolute; }
+        .envelope:hover { transform: scale(1.05); }
 
+        /* MAIN CONTAINER */
         .card-container {
-            background: transparent; width: 100vw; height: 100vh;
+            background: transparent; width: 100vw; height: 100vh; max-width: 100%; max-height: 100vh;
             padding: 60px 20px 100px 20px; box-sizing: border-box; overflow-y: auto; position: relative;
             scroll-behavior: smooth; display: none; opacity: 0; transform: translateY(50px); transition: all 1s ease;
-            scrollbar-width: none;  
+            -ms-overflow-style: none; scrollbar-width: none;  
         }
+        
         .card-container::-webkit-scrollbar { display: none; }
+        body.starlight-mode .card-container { color: #e6e6e6; }
+        body.starlight-mode p { color: #ccc; }
 
         h1 { 
             font-family: 'Dancing Script', cursive; color: #fff; font-size: 4.5rem; margin-bottom: 25px;
             text-shadow: 0 5px 15px rgba(255, 77, 148, 0.5); animation: gentlePulse 2s infinite alternate; cursor: pointer; 
         }
-        p { color: #555; font-size: 1.15rem; line-height: 1.6; margin-bottom: 12px; }
-        body.starlight-mode p { color: #ccc; }
+
+        p { color: #555; font-size: 1.15rem; line-height: 1.6; margin-bottom: 12px; min-height: 25px; }
 
         button {
             background-color: #ff4d94; color: white; border: none; padding: 10px 25px; font-size: 1.1rem;
-            border-radius: 50px; transition: all 0.3s ease; margin-top: 10px; font-family: 'Quicksand', sans-serif;
+            border-radius: 50px; transition: all 0.3s ease; margin-top: 10px; margin-bottom: 5px; font-family: 'Quicksand', sans-serif;
             font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
         }
+        button:hover { background-color: #ff1a75; transform: scale(1.05); }
+        
+        .theme-btn { position: absolute; top: 20px; right: 20px; background: none; font-size: 1.8rem; padding: 5px; box-shadow: none; }
+        .theme-btn:hover { background: none; transform: scale(1.1); box-shadow: none; }
 
         .photo-container { position: relative; width: 90%; max-width: 400px; margin: 0 auto 30px auto; overflow: hidden; border-radius: 20px; box-shadow: 0 15px 35px rgba(255, 77, 148, 0.3); }
-        .love-photo { width: 100%; display: block; animation: kenBurns 20s infinite alternate ease-in-out; }
+        .love-photo { width: 100%; display: block; transform: scale(1.1) translateX(0); animation: kenBurns 20s infinite alternate ease-in-out; }
 
         .timeline { border-left: 4px solid #ff4d94; margin: 30px auto; padding-left: 15px; text-align: left; max-width: 350px; }
         .time-item { margin-bottom: 20px; position: relative; font-size: 1.1rem; color: #555; }
+        body.starlight-mode .time-item { color: #ccc; }
         .time-item::before { content: "💖"; position: absolute; left: -28px; top: -2px; font-size: 1rem; background: rgba(255,255,255,0.8); border-radius: 50%; padding: 2px; }
+        body.starlight-mode .time-item::before { background: #1a1a2e; }
 
+        /* FEATURE 4: Future Dreams Wishlist */
         .wishlist { text-align: left; margin: 30px auto; max-width: 350px; padding: 15px; background: rgba(255, 255, 255, 0.4); border-radius: 15px; }
-        .wish-item { margin-bottom: 15px; cursor: pointer; font-size: 1.1rem; color: #555; display: flex; align-items: center; }
-        .wish-box { width: 22px; height: 22px; border: 2px solid #ff4d94; border-radius: 6px; margin-right: 15px; display: inline-flex; justify-content: center; align-items: center; }
+        body.starlight-mode .wishlist { background: rgba(0, 0, 0, 0.2); }
+        .wish-item { margin-bottom: 15px; cursor: pointer; font-size: 1.1rem; color: #555; display: flex; align-items: center; transition: all 0.2s; }
+        body.starlight-mode .wish-item { color: #ccc; }
+        .wish-box { width: 22px; height: 22px; border: 2px solid #ff4d94; border-radius: 6px; margin-right: 15px; display: inline-flex; justify-content: center; align-items: center; font-size: 1rem; transition: all 0.2s; }
+        .wish-item.checked .wish-box { background: #ffe6f2; border-color: #ff1a75; }
         .wish-item.checked { text-decoration: line-through; opacity: 0.7; }
 
+        .highlight { color: #ff4d94; font-weight: 700; font-size: 1.25rem; text-shadow: 0 0 5px rgba(255, 77, 148, 0.15); }
+        .music-player-container { margin-top: 35px; padding-top: 15px; display: flex; flex-direction: column; align-items: center; }
+        #timerBox { background: rgba(255, 255, 255, 0.5); color: #ff4d94; padding: 15px; border-radius: 20px; font-weight: bold; margin: 0 auto 25px auto; border: 2px dashed #ff4d94; font-size: 1.1rem; max-width: 350px;}
+        body.starlight-mode #timerBox { background: rgba(0, 0, 0, 0.3); color: #ffb3d9; border-color: #ffb3d9;}
+
+        .bubble { position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; border: 1px solid rgba(255, 77, 148, 0.2); animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: -1; }
+
+        /* FEATURE 2: Shooting Stars */
         #stars-container { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; }
-        body.starlight-mode #stars-container { display: block; }
-        .shooting-star { position: absolute; width: 80px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1)); animation: shoot 3s infinite linear; opacity: 0; }
+        body.starlight-mode #stars-container { display: block; } /* Only shows in night mode! */
+        .shooting-star {
+            position: absolute; width: 80px; height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
+            border-radius: 50%; animation: shoot 3s infinite linear; opacity: 0;
+        }
 
-        #hug-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; transition: box-shadow 1s ease; display: flex; justify-content: center; align-items: center; }
+        /* FEATURE 3: The Virtual Hug Overlay */
+        #hug-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 0px 0px rgba(255, 77, 148, 0);
+            pointer-events: none; z-index: 1000; transition: box-shadow 1s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
         .hug-active { box-shadow: inset 0 0 150px 80px rgba(255, 77, 148, 0.5) !important; }
-        #hug-text { font-size: 2.2rem; font-family: 'Dancing Script', cursive; color: #ff1a75; opacity: 0; transition: all 1s ease; }
-        .hug-active #hug-text { opacity: 1; }
+        #hug-text {
+            font-size: 2.2rem; font-family: 'Dancing Script', cursive; color: #ff1a75;
+            text-shadow: 0 0 15px white, 0 0 30px white; opacity: 0; transform: scale(0.5); transition: all 1s ease;
+        }
+        .hug-active #hug-text { opacity: 1; transform: scale(1); }
 
-        #letter-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
-        .modal-content { background: white; padding: 35px 25px; border-radius: 20px; max-width: 85%; width: 350px; transform: scale(0.8); transition: transform 0.3s ease; }
+        /* FEATURE 1: "Open When..." Modals */
+        #letter-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95); padding: 35px 25px; border-radius: 20px;
+            max-width: 85%; width: 350px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transform: scale(0.8); transition: transform 0.3s ease; position: relative;
+        }
+        body.starlight-mode .modal-content { background: rgba(26, 26, 46, 0.95); color: #ccc; }
+        .close-btn { background: #888; margin-top: 20px; }
+        .close-btn:hover { background: #666; }
 
+        #easterEggBox { display: none; margin-top: 30px; background: #ff4d94; color: white; padding: 20px; border-radius: 15px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 10px 20px rgba(255, 77, 148, 0.4); animation: gentlePulse 1s infinite alternate; }
+
+        /* Animations */
         @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.03); } }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes floatUpBubbles { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } }
+        @keyframes kenBurns { 0% { transform: scale(1.1) translateX(0%) translateY(0%); } 100% { transform: scale(1.25) translateX(-2%) translateY(-1%); } }
         @keyframes shoot { 0% { transform: rotate(-45deg) translateX(0); opacity: 1; } 100% { transform: rotate(-45deg) translateX(-1000px); opacity: 0; } }
-        @keyframes kenBurns { 0% { transform: scale(1.1); } 100% { transform: scale(1.25); } }
     </style>
 </head>
 <body>
+
     <div id="loader">
         <div class="loader-heart">💖</div>
         <div class="loader-text">Loading love for Ayuu...</div>
@@ -103,153 +165,318 @@
     <div id="letter-modal">
         <div class="modal-content" id="modal-inner">
             <h2 id="modal-title" style="color:#ff4d94; font-family: 'Dancing Script', cursive; font-size: 2.5rem; margin-top:0;"></h2>
-            <p id="modal-text"></p>
-            <button onclick="closeLetter()" style="background:#888;">Close Letter</button>
+            <p id="modal-text" style="line-height: 1.6;"></p>
+            <button class="close-btn" onclick="closeLetter()">Close Letter</button>
         </div>
     </div>
 
     <div class="card-container" id="mainCard">
-        <button class="theme-btn" onclick="toggleTheme()" style="position: absolute; top: 20px; right: 20px; background: none; font-size: 1.8rem; border:none;">🌙</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
 
         <h1 onclick="tapTitle()">Hi Ayuu</h1>
         
         <div class="photo-container">
-            <img src="image_0.jpg" alt="Ayuu" class="love-photo">
+            <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
         </div>
 
-        <div id="timerBox" style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 20px; border: 2px dashed #ff4d94; margin-bottom: 25px;">
-            Every second counts:<br><span id="timeDisplay" style="font-weight:bold; color:#ff4d94;">Calculating...</span>
+        <div id="timerBox">
+            Every second with you counts:<br><span id="timeDisplay">Calculating...</span>
         </div>
 
-        <p id="typeLine1"></p><p id="typeLine2" style="color:#ff4d94; font-weight:bold;"></p>
-        <p id="typeLine3"></p><p id="typeLine4"></p>
-        <p id="typeLine5"></p><p id="typeLine6" style="color:#ff4d94; font-weight:bold;"></p>
+        <p id="typeLine1"></p>
+        <p id="typeLine2" class="highlight"></p>
+        <p id="typeLine3"></p>
+        <p id="typeLine4"></p>
+        <p id="typeLine5"></p>
+        <p id="typeLine6" class="highlight"></p>
 
         <div class="timeline">
-            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got brighter ✨</div>
-            <div class="time-item"><b>Today:</b> Still obsessed with you 🥰</div>
+            <div class="time-item"><b>Jan 14, 2026:</b> The day my world got infinitely brighter ✨</div>
+            <div class="time-item"><b>Today:</b> Still completely, hopelessly obsessed with you 🥰</div>
+            <div class="time-item"><b>Forever:</b> I'm never letting you go 🗽</div>
         </div>
 
         <div class="wishlist">
-            <h3 style="color: #ff4d94; font-family: 'Dancing Script'; font-size: 2rem;">Our Future Dreams ✨</h3>
-            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Beach Sunset</div>
-            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Our own apartment</div>
-            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Adopt a kitten 😸</div>
+            <h3 style="color: #ff4d94; margin-top: 0; font-family: 'Dancing Script', cursive; font-size: 2rem;">Our Future Dreams ✨</h3>
+            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Watch the sunset at the beach</div>
+            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Get our own little apartment</div>
+            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Travel the world together</div>
+            <div class="wish-item" onclick="toggleWish(this)"><div class="wish-box"></div>Adopt a cute kitten 😸</div>
         </div>
 
-        <button onclick="triggerHug()" style="background:#ff1a75;">I need a hug 🥺</button>
+        <button onclick="triggerHug()" style="background-color: #ff1a75; font-size: 1.2rem; margin: 20px 0;">I need a hug 🥺</button>
+        <br>
         
-        <div style="margin: 20px 0; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 15px;">
-            <p style="color:#ff4d94; font-weight:bold;">💌 Open When...</p>
+        <div style="margin: 20px 0; background: rgba(255, 255, 255, 0.4); padding: 20px; border-radius: 15px;">
+            <p style="color: #ff4d94; font-weight: bold; margin-top: 0;">💌 Open When...</p>
             <button onclick="openLetter('miss')">You miss me</button>
             <button onclick="openLetter('stressed')">You're stressed</button>
+            <button onclick="openLetter('sleep')">You can't sleep</button>
         </div>
 
         <div class="music-player-container">
-            <audio id="bgMusic" loop><source src="song1.mp3" type="audio/mpeg"></audio>
+            <p style="font-size: 1rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
+            <audio id="bgMusic" loop>
+                <source src="song1.mp3" type="audio/mpeg">
+            </audio>
             <button id="musicToggleBtn" onclick="toggleMusic()">Pause Our Song ⏸️</button>
         </div>
 
-        <div id="easterEggBox" style="display:none; margin-top:20px; background:#ff4d94; color:white; padding:15px; border-radius:15px;">
-            🕵️‍♀️ SECRET: I love you endlessly! 💖🗽
+        <div id="easterEggBox">
+            🕵️‍♀️ YOU FOUND THE SECRET! 🕵️‍♀️<br><br>
+            I hid this deep in the code just for you. You are the most beautiful, amazing, and clever girl in the world! I love you endlessly! 💖🗽
         </div>
+
     </div>
+
     <script>
         window.onload = function() {
-            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; 
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000); }, 2000);
-            startTimer(); createShootingStars();
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 2000);
+
+            startTimer();
+            createBubbles();
+            createShootingStars(); // Pre-load the stars for night mode
         };
 
         function openEnvelope() {
-            document.documentElement.requestFullscreen().catch(() => {});
+            let docElm = document.documentElement;
+            if (docElm.requestFullscreen) { docElm.requestFullscreen().catch(err => console.log("Fullscreen prevented:", err)); } 
+            else if (docElm.webkitRequestFullscreen) { docElm.webkitRequestFullscreen(); }
+
             let music = document.getElementById('bgMusic');
-            music.play().then(() => { document.getElementById('musicToggleBtn').innerHTML = "Pause Our Song ⏸️"; });
-            document.getElementById('envelope-container').style.opacity = '0';
+            let btn = document.getElementById('musicToggleBtn');
+            music.play().then(() => { btn.innerHTML = "Pause Our Song ⏸️"; })
+            .catch(e => { btn.innerHTML = "Play Our Song 🎵"; });
+
+            const env = document.getElementById('envelope-container');
+            env.style.transform = 'scale(1.5) translateY(-50px)';
+            env.style.opacity = '0';
+            
             setTimeout(() => {
-                document.getElementById('envelope-container').style.display = 'none';
-                document.getElementById('mainCard').style.display = 'block';
-                setTimeout(() => { document.getElementById('mainCard').style.opacity = '1'; document.getElementById('mainCard').style.transform = 'translateY(0)'; startTypewriter(); }, 50);
+                env.style.display = 'none';
+                const card = document.getElementById('mainCard');
+                card.style.display = 'block';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                    startTypewriter(); 
+                }, 50);
             }, 800);
         }
 
-        function toggleWish(el) {
-            el.classList.toggle('checked');
-            el.querySelector('.wish-box').innerHTML = el.classList.contains('checked') ? '💖' : '';
+        // --- FEATURE 4: Wishlist Logic ---
+        function toggleWish(element) {
+            element.classList.toggle('checked');
+            let box = element.querySelector('.wish-box');
+            if(element.classList.contains('checked')) {
+                box.innerHTML = '💖';
+                // Pop animation
+                box.style.transform = 'scale(1.3)';
+                setTimeout(() => { box.style.transform = 'scale(1)'; }, 200);
+            } else {
+                box.innerHTML = '';
+            }
         }
 
+        // --- FEATURE 3: Virtual Hug Logic ---
         function triggerHug() {
-            document.getElementById('hug-overlay').classList.add('hug-active');
-            setTimeout(() => document.getElementById('hug-overlay').classList.remove('hug-active'), 3500);
+            const overlay = document.getElementById('hug-overlay');
+            overlay.classList.add('hug-active');
+            // Hug lasts for 3.5 seconds before fading out
+            setTimeout(() => {
+                overlay.classList.remove('hug-active');
+            }, 3500);
         }
 
+        // --- FEATURE 1: Open When Letters Logic ---
         const letters = {
-            'miss': { title: "When you miss me 💖", text: "I'm always in your heart. Close your eyes and feel my hug. I love you!" },
-            'stressed': { title: "When you're stressed 💪", text: "Take a deep breath. You're strong, and I'm right here with you. You got this!" }
+            'miss': { 
+                title: "When you miss me 💖", 
+                text: "Whenever you miss me, just put your hand over your heart. I am always right there. Close your eyes, take a deep breath, and remember that I am counting down the seconds until I can hold you again. I love you! 🗽" 
+            },
+            'stressed': { 
+                title: "When you're stressed 🌧️", 
+                text: "Take a deep breath, my love. You are so incredibly strong and capable. Whatever is stressing you out is temporary, but my love and support for you are permanent. You've got this, and I've got you. 💪✨" 
+            },
+            'sleep': { 
+                title: "When you can't sleep 🌙", 
+                text: "I wish I could be there to cuddle you to sleep. Imagine me wrapping my arms around you, keeping you safe and warm. Close your beautiful eyes, relax your mind, and let's meet in our dreams. Goodnight, my angel. 💤" 
+            }
         };
 
         function openLetter(type) {
             document.getElementById('modal-title').innerText = letters[type].title;
             document.getElementById('modal-text').innerText = letters[type].text;
-            document.getElementById('letter-modal').style.display = 'flex';
-            setTimeout(() => { document.getElementById('letter-modal').style.opacity = '1'; document.getElementById('modal-inner').style.transform = 'scale(1)'; }, 10);
+            const modal = document.getElementById('letter-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                document.getElementById('modal-inner').style.transform = 'scale(1)';
+            }, 10);
         }
 
         function closeLetter() {
-            document.getElementById('letter-modal').style.opacity = '0';
-            setTimeout(() => document.getElementById('letter-modal').style.display = 'none', 300);
+            const modal = document.getElementById('letter-modal');
+            modal.style.opacity = '0';
+            document.getElementById('modal-inner').style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
 
+        // --- FEATURE 2: Shooting Stars Generator ---
         function createShootingStars() {
             const container = document.getElementById('stars-container');
             for(let i=0; i<15; i++) {
-                let star = document.createElement('div'); star.className = 'shooting-star';
-                star.style.top = Math.random() * 80 + 'vh'; star.style.left = Math.random() * 150 + 'vw';
-                star.style.animationDelay = Math.random() * 15 + 's'; container.appendChild(star);
+                let star = document.createElement('div');
+                star.classList.add('shooting-star');
+                // Randomize positions and speeds
+                star.style.top = Math.random() * 80 + 'vh';
+                star.style.left = Math.random() * 150 + 'vw';
+                star.style.animationDelay = Math.random() * 15 + 's';
+                star.style.animationDuration = Math.random() * 2 + 2 + 's';
+                container.appendChild(star);
             }
         }
 
         function toggleMusic() {
-            let m = document.getElementById('bgMusic');
-            if (m.paused) { m.play(); document.getElementById('musicToggleBtn').innerHTML = "Pause Our Song ⏸️"; }
-            else { m.pause(); document.getElementById('musicToggleBtn').innerHTML = "Play Our Song 🎵"; }
+            let music = document.getElementById('bgMusic');
+            let btn = document.getElementById('musicToggleBtn');
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "Pause Our Song ⏸️";
+            } else {
+                music.pause();
+                btn.innerHTML = "Play Our Song 🎵";
+            }
         }
 
-        let tClicks = 0;
+        let titleClicks = 0;
+        let titleClickTimer;
         function tapTitle() {
-            tClicks++;
-            if (tClicks === 3) { document.getElementById('easterEggBox').style.display = 'block'; tClicks = 0; }
-            setTimeout(() => tClicks = 0, 1500);
+            titleClicks++;
+            clearTimeout(titleClickTimer); 
+            if (titleClicks === 3) {
+                document.getElementById('easterEggBox').style.display = 'block';
+                createEmojiShower();
+                setTimeout(createEmojiShower, 500);
+                setTimeout(createEmojiShower, 1000);
+                setTimeout(() => {
+                    let card = document.getElementById('mainCard');
+                    card.scrollTop = card.scrollHeight;
+                }, 200);
+                titleClicks = 0; 
+            } else {
+                titleClickTimer = setTimeout(() => { titleClicks = 0; }, 1000); 
+            }
         }
 
-        const lines = ["I know things feel hard right now.", "But I am right here with you.", "Every day with you is a blessing.", "Your smile is my favorite thing.", "You are always on my mind.", "I love you so much! 🗽💖"];
+        const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
+        const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
+        const text3 = "Every single day with you is a blessing. You make my world so incredibly bright.";
+        const text4 = "Your smile is my absolute favorite thing to see, and your laugh is my favorite sound.";
+        const text5 = "Even when we are apart, you are always on my mind and taking up all the space in my heart.";
+        const text6 = "I love you so much. You are never alone as long as I'm around! 🗽💖";
+
+        function typeWriter(elementId, text, speed, callback) {
+            let i = 0;
+            document.getElementById(elementId).innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    document.getElementById(elementId).innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) { setTimeout(callback, 400); }
+            }
+            type();
+        }
+
         function startTypewriter() {
-            let chain = Promise.resolve();
-            lines.forEach((text, i) => {
-                chain = chain.then(() => new Promise(res => {
-                    let j = 0;
-                    function type() {
-                        if (j < text.length) { document.getElementById('typeLine'+(i+1)).innerHTML += text[j++]; setTimeout(type, 35); }
-                        else res();
-                    }
-                    type();
-                }));
+            typeWriter("typeLine1", text1, 35, () => {
+                typeWriter("typeLine2", text2, 35, () => {
+                    typeWriter("typeLine3", text3, 35, () => {
+                        typeWriter("typeLine4", text4, 35, () => {
+                            typeWriter("typeLine5", text5, 35, () => {
+                                typeWriter("typeLine6", text6, 35, null);
+                            });
+                        });
+                    });
+                });
             });
         }
 
         function startTimer() {
-            const start = new Date("2026-01-14T00:00:00").getTime(); 
-            setInterval(() => {
-                const diff = new Date().getTime() - start;
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById("timeDisplay").innerHTML = d + "d " + h + "h " + m + "m " + s + "s";
+            const startDate = new Date("2026-01-14T00:00:00").getTime(); 
+            setInterval(function() {
+                const now = new Date().getTime();
+                const distance = now - startDate;
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("timeDisplay").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
             }, 1000);
         }
 
-        function toggleTheme() { document.body.classList.toggle('starlight-mode'); }
+        function createBubbles() {
+            for(let i = 0; i < 20; i++) {
+                let bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                bubble.style.width = Math.random() * 30 + 10 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubble.style.animationDuration = Math.random() * 5 + 5 + 's';
+                document.body.appendChild(bubble);
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('starlight-mode');
+            const btn = document.querySelector('.theme-btn');
+            if(document.body.classList.contains('starlight-mode')) { btn.innerText = '☀️'; } else { btn.innerText = '🌙'; }
+        }
+
+        function createEmojiShower() {
+            const emojis = ['💖', '😸', '🗽', '✨', '🌸']; 
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.classList.add('falling-emoji');
+                    // Style injected directly for the easter egg
+                    el.style.position = 'absolute';
+                    el.style.zIndex = '9999';
+                    el.style.top = '-10vh';
+                    el.style.animation = 'fall linear forwards';
+                    
+                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.fontSize = (Math.random() * 40 + 20) + 'px'; // Even bigger for the easter egg!
+                    el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(el);
+                    setTimeout(() => { el.remove(); }, 5000);
+                }, i * 50); 
+            }
+        }
+
+        document.body.addEventListener('click', function(event) {
+            if(event.target.tagName === 'BUTTON' || event.target.tagName === 'H1' || event.target.closest('#letter-modal')) return;
+
+            const clickHeart = document.createElement('div');
+            clickHeart.innerText = '💖';
+            clickHeart.style.position = 'absolute';
+            clickHeart.style.left = event.clientX + 'px';
+            clickHeart.style.top = event.clientY + 'px';
+            clickHeart.style.fontSize = '24px';
+            clickHeart.style.pointerEvents = 'none'; 
+            clickHeart.style.animation = 'floatUp 1.5s ease-out forwards';
+            document.body.appendChild(clickHeart);
+            setTimeout(() => { clickHeart.remove(); }, 1500);
+        });
     </script>
 </body>
 </html>
