@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Ayuu 💖</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -63,45 +63,40 @@
         }
         .envelope:hover { transform: scale(1.05); }
 
-        /* MAIN CONTAINER: Full Screen */
+        /* MAIN CONTAINER */
         .card-container {
             background: transparent; 
             width: 100vw;
             height: 100vh;
             max-width: 100%;
             max-height: 100vh;
-            
             padding: 60px 20px 100px 20px; 
             box-sizing: border-box; 
-            
             overflow-y: auto; 
             position: relative;
             scroll-behavior: smooth;
-            
             display: none; 
             opacity: 0;
             transform: translateY(50px);
             transition: all 1s ease;
-            
-            /* Hidden scrollbar */
             -ms-overflow-style: none;  
             scrollbar-width: none;  
         }
         
-        .card-container::-webkit-scrollbar {
-            display: none;
-        }
-
+        .card-container::-webkit-scrollbar { display: none; }
         body.starlight-mode .card-container { background: transparent; color: #e6e6e6; }
         body.starlight-mode p { color: #ccc; }
 
-        /* Larger, Elegant Title */
+        /* 1. UPGRADE: Elegant Cursive Title */
         h1 { 
+            font-family: 'Dancing Script', cursive; /* Applied the new font! */
             color: #fff; 
-            font-size: 3.5rem;
+            font-size: 4.5rem; /* Made it bigger and bolder */
             margin-bottom: 25px;
             text-shadow: 0 5px 15px rgba(255, 77, 148, 0.5); 
             animation: gentlePulse 2s infinite alternate;
+            /* Added pointer cursor to hint that it's clickable for the Easter Egg */
+            cursor: pointer; 
         }
 
         p { color: #555; font-size: 1.15rem; line-height: 1.6; margin-bottom: 12px; min-height: 25px; }
@@ -154,7 +149,6 @@
 
         .highlight { color: #ff4d94; font-weight: 700; font-size: 1.25rem; text-shadow: 0 0 5px rgba(255, 77, 148, 0.15); }
         .music-player-container { margin-top: 35px; padding-top: 15px; display: flex; flex-direction: column; align-items: center; }
-        audio { height: 35px; border-radius: 20px; outline: none; margin-bottom: 10px; opacity: 0.9;}
         
         #timerBox { background: rgba(255, 255, 255, 0.5); color: #ff4d94; padding: 15px; border-radius: 20px; font-weight: bold; margin: 0 auto 25px auto; border: 2px dashed #ff4d94; font-size: 1.1rem; max-width: 350px;}
         body.starlight-mode #timerBox { background: rgba(0, 0, 0, 0.3); color: #ffb3d9; border-color: #ffb3d9;}
@@ -166,14 +160,25 @@
             animation: floatUpBubbles 8s infinite ease-in; pointer-events: none; z-index: -1; 
         }
 
+        /* 3. UPGRADE: Secret Easter Egg Box */
+        #easterEggBox {
+            display: none; /* Hidden by default! */
+            margin-top: 30px;
+            background: #ff4d94;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(255, 77, 148, 0.4);
+            animation: gentlePulse 1s infinite alternate;
+        }
+
         /* Animations */
         @keyframes gentlePulse { from { transform: scale(1); } to { transform: scale(1.03); } }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatUpBubbles { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } }
-        @keyframes kenBurns {
-            0% { transform: scale(1.1) translateX(0%) translateY(0%); }
-            100% { transform: scale(1.25) translateX(-2%) translateY(-1%); }
-        }
+        @keyframes kenBurns { 0% { transform: scale(1.1) translateX(0%) translateY(0%); } 100% { transform: scale(1.25) translateX(-2%) translateY(-1%); } }
     </style>
 </head>
 <body>
@@ -190,7 +195,7 @@
     <div class="card-container" id="mainCard">
         <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">🌙</button>
 
-        <h1>Hi Ayuu</h1>
+        <h1 onclick="tapTitle()">Hi Ayuu</h1>
         
         <div class="photo-container">
             <img src="image_0.jpg" alt="Ayuu and me" class="love-photo" id="mainPhoto">
@@ -217,11 +222,17 @@
         <p id="reasonDisplay"></p>
 
         <div class="music-player-container">
-            <p style="font-size: 1rem; margin: 0 0 5px 0; color: #ff4d94; font-weight: bold;">🎵 Our Song</p>
-            <audio id="bgMusic" controls loop>
+            <audio id="bgMusic" loop>
                 <source src="song1.mp3" type="audio/mpeg">
             </audio>
+            <button id="musicToggleBtn" onclick="toggleMusic()" style="margin-top: 5px;">Pause Our Song ⏸️</button>
         </div>
+
+        <div id="easterEggBox">
+            🕵️‍♀️ YOU FOUND THE SECRET! 🕵️‍♀️<br><br>
+            I hid this deep in the code just for you. You are the most beautiful, amazing, and clever girl in the world! I love you endlessly! 💖🗽
+        </div>
+
     </div>
 
     <script>
@@ -237,17 +248,19 @@
         };
 
         function openEnvelope() {
-            // Request Full Screen Mode
             let docElm = document.documentElement;
-            if (docElm.requestFullscreen) {
-                docElm.requestFullscreen().catch(err => console.log("Fullscreen prevented:", err));
-            } else if (docElm.webkitRequestFullscreen) { 
-                docElm.webkitRequestFullscreen();
-            }
+            if (docElm.requestFullscreen) { docElm.requestFullscreen().catch(err => console.log("Fullscreen prevented:", err)); } 
+            else if (docElm.webkitRequestFullscreen) { docElm.webkitRequestFullscreen(); }
 
-            // Play music
+            // 2. UPGRADE: Custom Music Player Auto-Play Check
             let music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Audio prevented."));
+            let btn = document.getElementById('musicToggleBtn');
+            music.play().then(() => {
+                btn.innerHTML = "Pause Our Song ⏸️"; // If it plays, show pause button
+            }).catch(e => {
+                console.log("Audio prevented.");
+                btn.innerHTML = "Play Our Song 🎵"; // If blocked, show play button
+            });
 
             // Animate envelope away
             const env = document.getElementById('envelope-container');
@@ -256,10 +269,8 @@
             
             setTimeout(() => {
                 env.style.display = 'none';
-                
                 const card = document.getElementById('mainCard');
                 card.style.display = 'block';
-                
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
@@ -268,7 +279,50 @@
             }, 800);
         }
 
-        // --- Typewriter Logic (Auto-scroll removed!) ---
+        // --- 2. UPGRADE: Custom Music Button Logic ---
+        function toggleMusic() {
+            let music = document.getElementById('bgMusic');
+            let btn = document.getElementById('musicToggleBtn');
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "Pause Our Song ⏸️";
+            } else {
+                music.pause();
+                btn.innerHTML = "Play Our Song 🎵";
+            }
+        }
+
+        // --- 3. UPGRADE: Easter Egg Logic (Tap title 3 times fast!) ---
+        let titleClicks = 0;
+        let titleClickTimer;
+
+        function tapTitle() {
+            titleClicks++;
+            clearTimeout(titleClickTimer); // Reset the timer if she taps quickly
+            
+            if (titleClicks === 3) {
+                // SHE UNLOCKED IT!
+                document.getElementById('easterEggBox').style.display = 'block';
+                
+                // Massive Emoji Explosion (Calls it 3 times for extra magic!)
+                createEmojiShower();
+                setTimeout(createEmojiShower, 500);
+                setTimeout(createEmojiShower, 1000);
+                
+                // Automatically scroll down to the secret message!
+                setTimeout(() => {
+                    let card = document.getElementById('mainCard');
+                    card.scrollTop = card.scrollHeight;
+                }, 200);
+                
+                titleClicks = 0; // Reset
+            } else {
+                // If she stops tapping for 1 second, it resets her count to 0
+                titleClickTimer = setTimeout(() => { titleClicks = 0; }, 1000); 
+            }
+        }
+
+        // --- Typewriter Logic ---
         const text1 = "I know things feel hard right now, and sometimes you feel lonely.";
         const text2 = "But I want you to know: I am right here, and I am not going anywhere.";
         const text3 = "Every single day with you is a blessing. You make my world so incredibly bright.";
@@ -358,6 +412,23 @@
             display.style.transform = 'scale(1.1)';
             setTimeout(() => { display.style.transform = 'scale(1)'; }, 200);
         }
+
+        // Global click listener for the floating click-hearts
+        document.body.addEventListener('click', function(event) {
+            // Ignore if clicking a button or the title (so we don't mess up the easter egg)
+            if(event.target.tagName === 'BUTTON' || event.target.tagName === 'H1') return;
+
+            const clickHeart = document.createElement('div');
+            clickHeart.innerText = '💖';
+            clickHeart.style.position = 'absolute';
+            clickHeart.style.left = event.clientX + 'px';
+            clickHeart.style.top = event.clientY + 'px';
+            clickHeart.style.fontSize = '24px';
+            clickHeart.style.pointerEvents = 'none'; 
+            clickHeart.style.animation = 'floatUp 1.5s ease-out forwards';
+            document.body.appendChild(clickHeart);
+            setTimeout(() => { clickHeart.remove(); }, 1500);
+        });
     </script>
 </body>
 </html>
